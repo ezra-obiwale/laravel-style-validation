@@ -1,0 +1,13 @@
+# for local development
+version: "3.7"
+services:
+  validation:
+    image: dscribe/basic-node
+    build:
+      context: .
+      target: base
+    volumes:
+      - ".:/app"
+    user: 1000:1000
+    tty: true
+    stdin_open: true
