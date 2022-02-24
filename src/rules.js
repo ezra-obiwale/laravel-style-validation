@@ -1,176 +1,686 @@
 import messages from './messages'
-import { arrayToObject } from './utils'
+import { arrayToObject, isEmpty, isObject, parseMessage, regexFromString } from './utils'
 
-export const accepted = (value, options = [], message = null) => value === 'yes' || value === 'on' || value === 1 || value === true || message || message !== false && messages.accepted
+export const accepted = (value, { message = null }) => {
+    const isValid = value === 'yes' || value === 'on' || value === 1 || value === true
 
-export const acceptedIf = (value, options = [], message = null, data = {}) => {
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.accepted)
+}
+
+export const acceptedIf = (value, { options = [], message = null, data = {} }) => {
     options = arrayToObject(options)
 
-    let valid = true
+    let acceptable = true
 
-    for (let field in options) {
-        valid = options[field] == data[field]
+    for (let targetField in options) {
+        acceptable = options[targetField] == data[targetField]
 
-        if (!valid) {
+        if (!acceptable) {
             break
         }
     }
 
-    if (!valid) {
+    const accepted = accepted(value, { message })
+
+    if (!acceptable && accepted === true) {
+        return parseMessage(message, messages.declined)
+    }
+
+    if (acceptable && accepted !== true) {
+        return parseMessage(message, messages.accepted)
+    }
+
+    return true
+}
+
+export const alpha = (value, { message = null }) => {
+    const isValid = /^[a-zA-Z]*$/.test(`${value}`)
+
+    if (isValid) {
         return true
     }
 
-    return accepted(value, message)
+    return parseMessage(message, messages.alpha)
 }
 
-export const alpha = (value, options = [], message = null) => /^[a-zA-Z]*$/.test(`${value}`) || message || message !== false && messages.alpha
+export const alphaDash = (value, { message = null }) => {
+    const isValid = /^[a-zA-Z0-9\-_]*$/.test(`${value}`)
 
-export const alphaDash = (value, options = [], message = null) => /^[a-zA-Z0-9\-_]*$/.test(`${value}`) || message || message !== false && messages.alphaDash
+    if (isValid) {
+        return true
+    }
 
-export const alphaNum = (value, options = [], message = null) => /^[a-zA-Z0-9]*$/.test(`${value}`) || message || message !== false && messages.alphaNum
+    return parseMessage(message, messages.alphaDash)
+}
 
-export const array = (value, options = [], message = null) => Array.isArray(value) || message || message !== false && messages.array
+export const alphaNum = (value, { message = null }) => {
+    const isValid = /^[a-zA-Z0-9]*$/.test(`${value}`)
 
-export const between = (value, options = [], message = null) => {
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.alphaNum)
+}
+
+export const array = (value, { message = null }) => {
+    const isValid = Array.isArray(value)
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.array)
+}
+
+export const between = (value, { options = [], message = null }) => {
     const [value1, value2] = options
     const min = Math.min(value1, value2)
     const min = Math.max(value1, value2)
 
-    return min <= value && value <= max || message || message !== false && messages.between.replace('$1', value1).replace('$2', value2)
+    const isValid = min <= value && value <= max
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.between, { $min: value1, $max: value2 })
 }
 
-export const bool = (value, options = [], message = null) => value === true || value === false || value === 1 || value === 0 || value === '1' || value === '0' || message || message !== false && messages.boolean
+export const bool = (value, { message = null }) => {
+    const isValid = value === true || value === false || value === 1 || value === 0 || value === '1' || value === '0'
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.boolean)
+}
 
 export const boolean = bool
 
-export const declined = (value, options = [], message = null) => value === 'no' || value === 'off' || value === 0 || value === false || message || message !== false && messages.declined
+export const declined = (value, { message = null }) => {
+    const isValid = value === 'no' || value === 'off' || value === 0 || value === false
 
-export const declinedIf = (value, options = [], message = null, data = {}) => {
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.declined)
+}
+
+export const declinedIf = (value, { options = [], message = null, data = {} }) => {
     options = arrayToObject(options)
 
-    let valid = true
+    let declinable = true
 
-    for (let field in options) {
-        valid = options[field] == data[field]
+    for (let targetField in options) {
+        declinable = options[targetField] == data[targetField]
 
-        if (!valid) {
+        if (!declinable) {
             break
         }
     }
 
-    if (!valid) {
+    const declined = declined(value, { message })
+
+    if (!declinable && declined === true) {
+        return parseMessage(message, messages.acceptable)
+    }
+
+    if (declinable && declined !== true) {
+        return parseMessage(message, messages.declined)
+    }
+
+    return true
+}
+
+export const different = (value, { options = [], message = null, data = {} }) => {
+    const otherfield = options[0]
+    const otherfieldValue = data[otherfield]
+
+    const isValid = value !== otherfieldValue
+
+    if (isValid) {
         return true
     }
 
-    return declined(value, message)
+    return parseMessage(message, messages.different, { $otherfieldValue: otherfieldValue })
 }
 
-export const different = (value, options = [], message = null, data = {}) => {
-    const field = options[0]
-    const otherValue = data[field]
-
-    return value !== otherValue || message || message !== false && messages.different.replace('$otherFieldValue', otherValue)
-}
-
-export const digits = (value, options = [], message = null) => {
+export const digits = (value, { options = [], message = null }) => {
     const floatValue = parseFloat(value)
     const intValue = parstInt(value)
     const length = parseInt(options[0])
 
-    let valid = (`${value}` === `${floatValue}` || `${value}` === `${intValue}`)
+    let isValid = (`${value}` === `${floatValue}` || `${value}` === `${intValue}`)
 
     if (options.length) {
-        valid = valid && `${value}`.length === length
+        isValid = isValid && `${value}`.length === length
     }
 
-    return valid || message || message !== false && messages.digits.replace('$1', options[0])
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.digits, { $value: options[0] })
 }
 
-export const digitsBetween = (value, options = [], message = null) => {
+export const digitsBetween = (value, { options = [], message = null }) => {
     const [value1, value2] = options
     const min = Math.min(value1, value2)
     const min = Math.max(value1, value2)
     const valueLength = `${value}`.length
 
-    return min <= valueLength && valueLength <= max || message || message !== false && messages.digitsBetween.replace('$1', value1).replace('$2', value2)
+    const isValid = min <= valueLength && valueLength <= max
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.digitsBetween, { $min: value1, $max: value2 })
 }
 
-export const email = (value, options = [], message = null) => {
+export const email = (value, { message = null }) => {
     const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
     return regex.test(value) || message || message !== false && messages.email
 }
 
-export const endsWith = (value, options = [], message = null) => {
-    let valid = false
+export const endsWith = (value, { options = [], message = null }) => {
+    let isValid = false
 
     for (let option of options) {
         if (Array.isArray(value)) {
-            valid = value[value.length - 1] === option
+            isValid = value[value.length - 1] === option
         } else {
-            valid = `${value}`.endsWith(option)
+            isValid = `${value}`.endsWith(option)
         }
 
-        if (valid) {
+        if (isValid) {
             break;
         }
     }
 
-    return valid || message || message !== false && messages.endsWith.replace('$values', options.join(', '))
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.endsWith, { $values: options.join(', ') })
 }
 
-export const filled = (value, options = [], message = null) => {
-    return value !== null || value !== undefined || value !== '' || message || message !== false && messages.filled
+export const filled = (value, { message = null }) => {
+    const isValid = value !== null || value !== undefined || value !== ''
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.filled)
 }
 
-export const gt = (value, options = [], message = null, data = {}) => {
-    const field = options[0]
-    const otherValue = data[field]
+export const gt = (value, { options = [], message = null, data = {} }) => {
+    const otherfield = options[0]
+    const otherfieldValue = data[otherfield]
 
-    return value > otherValue || message || message !== false && messages.gt.replace('$otherFieldValue', otherValue)
+    const isValid = value > otherfieldValue
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.gt, { $otherfieldValue: otherfieldValue })
 }
 
-export const gte = (value, options = [], message = null, data = {}) => {
-    const field = options[0]
-    const otherValue = data[field]
+export const gte = (value, { options = [], message = null, data = {} }) => {
+    const otherfield = options[0]
+    const otherfieldValue = data[otherfield]
 
-    return value >= otherValue || message || message !== false && messages.gte.replace('$otherFieldValue', otherValue)
+    const isValid = value >= otherfieldValue
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.gte, { $otherfieldValue: otherfieldValue })
 }
 
-export const $in = (value, options = [], message = null) => {
-    return options.includes(value) || message || message !== false && messages.$in.replace('$values', options.join(', '))
+export const $in = (value, { options = [], message = null }) => {
+    const isValid = options.includes(value)
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.$in, { $values: options.join(', ') })
 }
 
-export const lt = (value, options = [], message = null, data = {}) => {
-    const field = options[0]
-    const otherValue = data[field]
+export const inArray = (value, { options = [], message = null, data = {} }) => {
+    const otherfield = options[0]
+    const otherfieldValue = data[otherfield]
 
-    return value < otherValue || message || message !== false && messages.lt.replace('$otherFieldValue', otherValue)
+    const isValid = Array.isArray(otherfieldValue) && otherfieldValue.includes(value)
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.inArray, { $values: otherfieldValue.join(', ') })
 }
 
-export const lte = (value, options = [], message = null, data = {}) => {
-    const field = options[0]
-    const otherValue = data[field]
+export const integer = (value, { message = null }) => {
+    const isValid = typeof value === integer
 
-    return value <= otherValue || message || message !== false && messages.lte.replace('$otherFieldValue', otherValue)
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.integer)
 }
 
-export const object = (value, options = [], message = null) => {
-    let valid = true
+export const lt = (value, { options = [], message = null, data = {} }) => {
+    const otherfield = options[0]
+    const otherfieldValue = data[otherfield]
 
-    if (typeof value !== 'object' || value === null || Array.isArray(value)) {
-        valid = false
+    const isValid = value < otherfieldValue
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.lt, { $otherfieldValue: otherfieldValue })
+}
+
+export const lte = (value, { options = [], message = null, data = {} }) => {
+    const otherfield = options[0]
+    const otherfieldValue = data[otherfield]
+
+    const isValid = value <= otherfieldValue
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.lte, { $otherfieldValue: otherfieldValue })
+}
+
+export const max = (value, { options = [], message = null }) => {
+    const maxValue = parseFloat(options[0])
+
+    const isValid = value <= maxValue
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.max, { $value: maxValue })
+}
+
+export const min = (value, { options = [], message = null }) => {
+    const minValue = parseFloat(options[0])
+
+    const isValid = value >= minValue
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.min, { $value: minValue })
+}
+
+export const notIn = (value, { options = [], message = null }) => {
+    const isValid = !options.includes(value)
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.notIn, { $values: options.join(', ') })
+}
+
+export const notRegex = (value, { options = [], message = null }) => {
+    const regex = regexFromString(options[0])
+
+    const isValid = !regex.test(`${value}`)
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.notRegex)
+}
+
+export const nullable = (value, { options = [], message = null, field = null }) => {
+    const isValid = isEmpty(value)
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.nullable)
+}
+
+export const numeric = (value, { options = [], message = null }) => {
+    const isValid = !isNaN(value)
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.numeric)
+}
+
+export const object = (value, { options = [], message = null }) => {
+    let isValid = true
+    let defaultMessage = messages.object
+    let replacements = {}
+
+    if (!isObject(value)) {
+        isValid = false
     } else {
         for (let key of options) {
             if (!value.hasOwnProperty(key)) {
-                valid = false
+                isValid = false
 
                 break
             }
         }
 
-        message = message || message !== false && messages.objectWithKeys.replace('$keys', options.join(', '))
+        defaultMessage = messages.objectWithKeys
+        replacements = { $keys: options.join(', ') }
     }
 
-    return valid || message || message !== false && messages.object
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, defaultMessage, replacements)
+}
+
+export const present = (value, { message = null, field = null, data = {} }) => {
+    const isValid = field && data.hasOwnProperty(field)
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.present, { $field: field })
+}
+
+export const prohibited = (value, { field = null, message = null }) => {
+    const isValid = !field || !data.hasOwnProperty(field) || isEmpty(value)
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.prohibited, { $field: field })
+}
+
+export const prohibitedIf = (value, { data = {}, field = null, options = [], message = null }) => {
+    options = arrayToObject(options)
+
+    let prohibitable = true
+
+    for (let targetField in options) {
+        prohibitable = data[targetField] == options[targetField]
+
+        if (!prohibitable) {
+            break
+        }
+    }
+
+    if (!prohibitable) {
+        return true
+    }
+
+    return prohibited(value, { field, message })
+}
+
+export const prohibitedUnless = (value, { options = [], message = null }) => {
+    options = arrayToObject(options)
+
+    let prohibitable = true
+
+    for (let targetField in options) {
+        prohibitable = data[targetField] == options[targetField]
+
+        if (!prohibitable) {
+            break
+        }
+    }
+
+    if (prohibitable) {
+        return true
+    }
+
+    return prohibited(value, { field, message })
+}
+
+export const prohibits = (value, { data = {}, options = [], message = null }) => {
+    const prohibitable = !isEmpty(value)
+
+    if (!prohibitable) {
+        return true
+    }
+
+    let isValid = true
+    let targetField
+
+    for (targetField of options) {
+        isValid = !data.hasOwnProperty(targetField) || isEmpty(data[targetField])
+
+        if (!isValid) {
+            break
+        }
+    }
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.prohibits, { $otherfield: targetField })
+}
+
+export const regex = (value, { options = [], message = null }) => {
+    const regex = regexFromString(options[0])
+
+    const isValid = regex.test(`${value}`)
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.notRegex)
+}
+
+export const required = (value, { message = null }) => {
+    const isValid = !isEmpty(value)
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.required)
+}
+
+export const requiredIf = (value, { data = {}, options = [], message = null }) => {
+    options = arrayToObject(options)
+
+    let isRequired = true
+
+    for (let targetField in options) {
+        isRequired = options[targetField] == data[targetField]
+
+        if (!isRequired) {
+            break
+        }
+    }
+
+    if (!isRequired) {
+        return true
+    }
+
+    return required(value, { message })
+}
+
+export const requiredUnless = (value, { data = {}, options = [], message = null }) => {
+    options = arrayToObject(options)
+
+    let isRequired = false
+
+    for (let targetField in options) {
+        isRequired = options[targetField] == data[targetField]
+
+        if (isRequired) {
+            break
+        }
+    }
+
+    if (!isRequired) {
+        return true
+    }
+
+    return required(value, { message })
+}
+
+export const requiredWith = (value, { data = {}, options = [], message = null }) => {
+    let isRequired = false
+
+    for (let targetField in options) {
+        isRequired = !isEmpty(data[targetField])
+
+        if (isRequired) {
+            break
+        }
+    }
+
+    if (!isRequired) {
+        return true
+    }
+
+    return required(value, { message })
+}
+
+export const requiredWithAll = (value, { options = [], message = null }) => {
+    let isRequired = true
+
+    for (let targetField in options) {
+        isRequired = !isEmpty(data[targetField])
+
+        if (!isRequired) {
+            break
+        }
+    }
+
+    if (!isRequired) {
+        return true
+    }
+
+    return required(value, { message })
+}
+
+export const requiredWithout = (value, { options = [], message = null }) => {
+    let isRequired = true
+
+    for (let targetField in options) {
+        isRequired = isEmpty(data[targetField])
+
+        if (!isRequired) {
+            break
+        }
+    }
+
+    if (!isRequired) {
+        return true
+    }
+
+    return required(value, { message })
+}
+
+export const requiredWithoutAll = (value, { options = [], message = null }) => {
+    let isRequired = false
+
+    for (let targetField in options) {
+        isRequired = !isEmpty(data[targetField])
+
+        if (isRequired) {
+            break
+        }
+    }
+
+    if (!isRequired) {
+        return true
+    }
+
+    return required(value, { message })
+}
+
+export const same = (value, { data = {}, options = [], message = null }) => {
+    const otherfield = options[0]
+    const otherfieldValue = data[otherfield]
+
+    const isValid = value == otherfieldValue
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.same, { $otherfieldValue: otherfieldValue })
+}
+
+export const startsWith = (value, { options = [], message = null }) => {
+    let isValid = false
+
+    for (let option of options) {
+        if (Array.isArray(value)) {
+            isValid = value[0] === option
+        } else {
+            isValid = `${value}`.startsWith(option)
+        }
+
+        if (isValid) {
+            break;
+        }
+    }
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.startsWith, { $values: options.join(', ') })
+}
+
+export const string = (value, { rules = [], message = null }) => {
+    const isValid = typeof value === 'string' || (rules.includes('nullable') && isEmpty(value))
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.string)
+}
+
+export const url = (value, { options = [], message = null }) => {
+    const isValid = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g.test(value)
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.url)
+}
+
+export const uuid = (value, { options = [], message = null }) => {
+    const isValid = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi.test(value)
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.uuid)
 }
