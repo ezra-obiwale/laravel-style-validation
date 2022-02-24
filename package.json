@@ -1,5 +1,5 @@
 {
-  "name": "vuravel-validation",
+  "name": "@ezraobiwale/vuravel-validation",
   "version": "1.0.0",
   "description": "Vue validations, the Laravel way",
   "main": "src/index.js",
