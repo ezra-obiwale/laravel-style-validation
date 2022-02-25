@@ -1,7 +1,7 @@
 import messages from './messages'
 import { arrayToObject, isEmpty, isObject, parseMessage, regexFromString } from './utils'
 
-export const accepted = (value, { message = null }) => {
+export const accepted = (value, { message }) => {
     const isValid = value === 'yes' || value === 'on' || value === 1 || value === true
 
     if (isValid) {
@@ -11,13 +11,13 @@ export const accepted = (value, { message = null }) => {
     return parseMessage(message, messages.accepted)
 }
 
-export const acceptedIf = (value, { options = [], message = null, data = {} }) => {
-    options = arrayToObject(options)
+export const acceptedIf = (value, { data = {}, message = null, params = [] }) => {
+    params = arrayToObject(params)
 
     let acceptable = true
 
-    for (let targetField in options) {
-        acceptable = options[targetField] == data[targetField]
+    for (let targetField in params) {
+        acceptable = params[targetField] == data[targetField]
 
         if (!acceptable) {
             break
@@ -37,7 +37,7 @@ export const acceptedIf = (value, { options = [], message = null, data = {} }) =
     return true
 }
 
-export const alpha = (value, { message = null }) => {
+export const alpha = (value, { message }) => {
     const isValid = /^[a-zA-Z]*$/.test(`${value}`)
 
     if (isValid) {
@@ -47,7 +47,7 @@ export const alpha = (value, { message = null }) => {
     return parseMessage(message, messages.alpha)
 }
 
-export const alphaDash = (value, { message = null }) => {
+export const alphaDash = (value, { message }) => {
     const isValid = /^[a-zA-Z0-9\-_]*$/.test(`${value}`)
 
     if (isValid) {
@@ -57,7 +57,7 @@ export const alphaDash = (value, { message = null }) => {
     return parseMessage(message, messages.alphaDash)
 }
 
-export const alphaNum = (value, { message = null }) => {
+export const alphaNum = (value, { message }) => {
     const isValid = /^[a-zA-Z0-9]*$/.test(`${value}`)
 
     if (isValid) {
@@ -67,7 +67,7 @@ export const alphaNum = (value, { message = null }) => {
     return parseMessage(message, messages.alphaNum)
 }
 
-export const array = (value, { message = null }) => {
+export const array = (value, { message }) => {
     const isValid = Array.isArray(value)
 
     if (isValid) {
@@ -77,8 +77,8 @@ export const array = (value, { message = null }) => {
     return parseMessage(message, messages.array)
 }
 
-export const between = (value, { options = [], message = null }) => {
-    const [value1, value2] = options
+export const between = (value, { message = null, params = [] }) => {
+    const [value1, value2] = params
     const min = Math.min(value1, value2)
     const min = Math.max(value1, value2)
 
@@ -91,7 +91,7 @@ export const between = (value, { options = [], message = null }) => {
     return parseMessage(message, messages.between, { $min: value1, $max: value2 })
 }
 
-export const bool = (value, { message = null }) => {
+export const bool = (value, { message }) => {
     const isValid = value === true || value === false || value === 1 || value === 0 || value === '1' || value === '0'
 
     if (isValid) {
@@ -103,7 +103,7 @@ export const bool = (value, { message = null }) => {
 
 export const boolean = bool
 
-export const declined = (value, { message = null }) => {
+export const declined = (value, { message }) => {
     const isValid = value === 'no' || value === 'off' || value === 0 || value === false
 
     if (isValid) {
@@ -113,13 +113,13 @@ export const declined = (value, { message = null }) => {
     return parseMessage(message, messages.declined)
 }
 
-export const declinedIf = (value, { options = [], message = null, data = {} }) => {
-    options = arrayToObject(options)
+export const declinedIf = (value, { data = {}, message = null, params = [] }) => {
+    params = arrayToObject(params)
 
     let declinable = true
 
-    for (let targetField in options) {
-        declinable = options[targetField] == data[targetField]
+    for (let targetField in params) {
+        declinable = params[targetField] == data[targetField]
 
         if (!declinable) {
             break
@@ -139,8 +139,8 @@ export const declinedIf = (value, { options = [], message = null, data = {} }) =
     return true
 }
 
-export const different = (value, { options = [], message = null, data = {} }) => {
-    const otherfield = options[0]
+export const different = (value, { data = {}, message = null, params = [] }) => {
+    const otherfield = params[0]
     const otherfieldValue = data[otherfield]
 
     const isValid = value !== otherfieldValue
@@ -152,14 +152,14 @@ export const different = (value, { options = [], message = null, data = {} }) =>
     return parseMessage(message, messages.different, { $otherfieldValue: otherfieldValue })
 }
 
-export const digits = (value, { options = [], message = null }) => {
+export const digits = (value, { message = null, params = [] }) => {
     const floatValue = parseFloat(value)
     const intValue = parstInt(value)
-    const length = parseInt(options[0])
+    const length = parseInt(params[0])
 
     let isValid = (`${value}` === `${floatValue}` || `${value}` === `${intValue}`)
 
-    if (options.length) {
+    if (params.length) {
         isValid = isValid && `${value}`.length === length
     }
 
@@ -167,11 +167,11 @@ export const digits = (value, { options = [], message = null }) => {
         return true
     }
 
-    return parseMessage(message, messages.digits, { $value: options[0] })
+    return parseMessage(message, messages.digits, { $value: params[0] })
 }
 
-export const digitsBetween = (value, { options = [], message = null }) => {
-    const [value1, value2] = options
+export const digitsBetween = (value, { message = null, params = [] }) => {
+    const [value1, value2] = params
     const min = Math.min(value1, value2)
     const min = Math.max(value1, value2)
     const valueLength = `${value}`.length
@@ -185,16 +185,16 @@ export const digitsBetween = (value, { options = [], message = null }) => {
     return parseMessage(message, messages.digitsBetween, { $min: value1, $max: value2 })
 }
 
-export const email = (value, { message = null }) => {
+export const email = (value, { message }) => {
     const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
     return regex.test(value) || message || message !== false && messages.email
 }
 
-export const endsWith = (value, { options = [], message = null }) => {
+export const endsWith = (value, { message = null, params = [] }) => {
     let isValid = false
 
-    for (let option of options) {
+    for (let option of params) {
         if (Array.isArray(value)) {
             isValid = value[value.length - 1] === option
         } else {
@@ -210,10 +210,10 @@ export const endsWith = (value, { options = [], message = null }) => {
         return true
     }
 
-    return parseMessage(message, messages.endsWith, { $values: options.join(', ') })
+    return parseMessage(message, messages.endsWith, { $values: params.join(', ') })
 }
 
-export const filled = (value, { message = null }) => {
+export const filled = (value, { message }) => {
     const isValid = value !== null || value !== undefined || value !== ''
 
     if (isValid) {
@@ -223,8 +223,8 @@ export const filled = (value, { message = null }) => {
     return parseMessage(message, messages.filled)
 }
 
-export const gt = (value, { options = [], message = null, data = {} }) => {
-    const otherfield = options[0]
+export const gt = (value, { data = {}, message = null, params = [] }) => {
+    const otherfield = params[0]
     const otherfieldValue = data[otherfield]
 
     const isValid = value > otherfieldValue
@@ -236,8 +236,8 @@ export const gt = (value, { options = [], message = null, data = {} }) => {
     return parseMessage(message, messages.gt, { $otherfieldValue: otherfieldValue })
 }
 
-export const gte = (value, { options = [], message = null, data = {} }) => {
-    const otherfield = options[0]
+export const gte = (value, { data = {}, message = null, params = [] }) => {
+    const otherfield = params[0]
     const otherfieldValue = data[otherfield]
 
     const isValid = value >= otherfieldValue
@@ -249,18 +249,18 @@ export const gte = (value, { options = [], message = null, data = {} }) => {
     return parseMessage(message, messages.gte, { $otherfieldValue: otherfieldValue })
 }
 
-export const $in = (value, { options = [], message = null }) => {
-    const isValid = options.includes(value)
+export const $in = (value, { message = null, params = [] }) => {
+    const isValid = params.includes(value)
 
     if (isValid) {
         return true
     }
 
-    return parseMessage(message, messages.$in, { $values: options.join(', ') })
+    return parseMessage(message, messages.$in, { $values: params.join(', ') })
 }
 
-export const inArray = (value, { options = [], message = null, data = {} }) => {
-    const otherfield = options[0]
+export const inArray = (value, { data = {}, message = null, params = [] }) => {
+    const otherfield = params[0]
     const otherfieldValue = data[otherfield]
 
     const isValid = Array.isArray(otherfieldValue) && otherfieldValue.includes(value)
@@ -272,7 +272,7 @@ export const inArray = (value, { options = [], message = null, data = {} }) => {
     return parseMessage(message, messages.inArray, { $values: otherfieldValue.join(', ') })
 }
 
-export const integer = (value, { message = null }) => {
+export const integer = (value, { message }) => {
     const isValid = typeof value === integer
 
     if (isValid) {
@@ -282,8 +282,8 @@ export const integer = (value, { message = null }) => {
     return parseMessage(message, messages.integer)
 }
 
-export const lt = (value, { options = [], message = null, data = {} }) => {
-    const otherfield = options[0]
+export const lt = (value, { data = {}, message = null, params = [] }) => {
+    const otherfield = params[0]
     const otherfieldValue = data[otherfield]
 
     const isValid = value < otherfieldValue
@@ -295,8 +295,8 @@ export const lt = (value, { options = [], message = null, data = {} }) => {
     return parseMessage(message, messages.lt, { $otherfieldValue: otherfieldValue })
 }
 
-export const lte = (value, { options = [], message = null, data = {} }) => {
-    const otherfield = options[0]
+export const lte = (value, { data = {}, message = null, params = [] }) => {
+    const otherfield = params[0]
     const otherfieldValue = data[otherfield]
 
     const isValid = value <= otherfieldValue
@@ -308,8 +308,8 @@ export const lte = (value, { options = [], message = null, data = {} }) => {
     return parseMessage(message, messages.lte, { $otherfieldValue: otherfieldValue })
 }
 
-export const max = (value, { options = [], message = null }) => {
-    const maxValue = parseFloat(options[0])
+export const max = (value, { message = null, params = [] }) => {
+    const maxValue = parseFloat(params[0])
 
     const isValid = value <= maxValue
 
@@ -320,8 +320,8 @@ export const max = (value, { options = [], message = null }) => {
     return parseMessage(message, messages.max, { $value: maxValue })
 }
 
-export const min = (value, { options = [], message = null }) => {
-    const minValue = parseFloat(options[0])
+export const min = (value, { message = null, params = [] }) => {
+    const minValue = parseFloat(params[0])
 
     const isValid = value >= minValue
 
@@ -332,18 +332,18 @@ export const min = (value, { options = [], message = null }) => {
     return parseMessage(message, messages.min, { $value: minValue })
 }
 
-export const notIn = (value, { options = [], message = null }) => {
-    const isValid = !options.includes(value)
+export const notIn = (value, { message = null, params = [] }) => {
+    const isValid = !params.includes(value)
 
     if (isValid) {
         return true
     }
 
-    return parseMessage(message, messages.notIn, { $values: options.join(', ') })
+    return parseMessage(message, messages.notIn, { $values: params.join(', ') })
 }
 
-export const notRegex = (value, { options = [], message = null }) => {
-    const regex = regexFromString(options[0])
+export const notRegex = (value, { message = null, params = [] }) => {
+    const regex = regexFromString(params[0])
 
     const isValid = !regex.test(`${value}`)
 
@@ -354,7 +354,7 @@ export const notRegex = (value, { options = [], message = null }) => {
     return parseMessage(message, messages.notRegex)
 }
 
-export const nullable = (value, { options = [], message = null, field = null }) => {
+export const nullable = (value, { message }) => {
     const isValid = isEmpty(value)
 
     if (isValid) {
@@ -364,7 +364,7 @@ export const nullable = (value, { options = [], message = null, field = null }) 
     return parseMessage(message, messages.nullable)
 }
 
-export const numeric = (value, { options = [], message = null }) => {
+export const numeric = (value, { message }) => {
     const isValid = !isNaN(value)
 
     if (isValid) {
@@ -374,7 +374,7 @@ export const numeric = (value, { options = [], message = null }) => {
     return parseMessage(message, messages.numeric)
 }
 
-export const object = (value, { options = [], message = null }) => {
+export const object = (value, { message = null, params = [] }) => {
     let isValid = true
     let defaultMessage = messages.object
     let replacements = {}
@@ -382,7 +382,7 @@ export const object = (value, { options = [], message = null }) => {
     if (!isObject(value)) {
         isValid = false
     } else {
-        for (let key of options) {
+        for (let key of params) {
             if (!value.hasOwnProperty(key)) {
                 isValid = false
 
@@ -391,7 +391,7 @@ export const object = (value, { options = [], message = null }) => {
         }
 
         defaultMessage = messages.objectWithKeys
-        replacements = { $keys: options.join(', ') }
+        replacements = { $keys: params.join(', ') }
     }
 
     if (isValid) {
@@ -401,7 +401,7 @@ export const object = (value, { options = [], message = null }) => {
     return parseMessage(message, defaultMessage, replacements)
 }
 
-export const present = (value, { message = null, field = null, data = {} }) => {
+export const present = (value, { data = {}, field = null, message = null }) => {
     const isValid = field && data.hasOwnProperty(field)
 
     if (isValid) {
@@ -421,13 +421,13 @@ export const prohibited = (value, { field = null, message = null }) => {
     return parseMessage(message, messages.prohibited, { $field: field })
 }
 
-export const prohibitedIf = (value, { data = {}, field = null, options = [], message = null }) => {
-    options = arrayToObject(options)
+export const prohibitedIf = (value, { data = {}, field = null, message = null, params = [] }) => {
+    params = arrayToObject(params)
 
     let prohibitable = true
 
-    for (let targetField in options) {
-        prohibitable = data[targetField] == options[targetField]
+    for (let targetField in params) {
+        prohibitable = data[targetField] == params[targetField]
 
         if (!prohibitable) {
             break
@@ -441,13 +441,13 @@ export const prohibitedIf = (value, { data = {}, field = null, options = [], mes
     return prohibited(value, { field, message })
 }
 
-export const prohibitedUnless = (value, { options = [], message = null }) => {
-    options = arrayToObject(options)
+export const prohibitedUnless = (value, { message = null, params = [] }) => {
+    params = arrayToObject(params)
 
     let prohibitable = true
 
-    for (let targetField in options) {
-        prohibitable = data[targetField] == options[targetField]
+    for (let targetField in params) {
+        prohibitable = data[targetField] == params[targetField]
 
         if (!prohibitable) {
             break
@@ -461,7 +461,7 @@ export const prohibitedUnless = (value, { options = [], message = null }) => {
     return prohibited(value, { field, message })
 }
 
-export const prohibits = (value, { data = {}, options = [], message = null }) => {
+export const prohibits = (value, { data = {}, message = null, params = [] }) => {
     const prohibitable = !isEmpty(value)
 
     if (!prohibitable) {
@@ -471,7 +471,7 @@ export const prohibits = (value, { data = {}, options = [], message = null }) =>
     let isValid = true
     let targetField
 
-    for (targetField of options) {
+    for (targetField of params) {
         isValid = !data.hasOwnProperty(targetField) || isEmpty(data[targetField])
 
         if (!isValid) {
@@ -486,8 +486,8 @@ export const prohibits = (value, { data = {}, options = [], message = null }) =>
     return parseMessage(message, messages.prohibits, { $otherfield: targetField })
 }
 
-export const regex = (value, { options = [], message = null }) => {
-    const regex = regexFromString(options[0])
+export const regex = (value, { message = null, params = [] }) => {
+    const regex = regexFromString(params[0])
 
     const isValid = regex.test(`${value}`)
 
@@ -498,7 +498,7 @@ export const regex = (value, { options = [], message = null }) => {
     return parseMessage(message, messages.notRegex)
 }
 
-export const required = (value, { message = null }) => {
+export const required = (value, { message }) => {
     const isValid = !isEmpty(value)
 
     if (isValid) {
@@ -508,13 +508,13 @@ export const required = (value, { message = null }) => {
     return parseMessage(message, messages.required)
 }
 
-export const requiredIf = (value, { data = {}, options = [], message = null }) => {
-    options = arrayToObject(options)
+export const requiredIf = (value, { data = {}, message = null, params = [] }) => {
+    params = arrayToObject(params)
 
     let isRequired = true
 
-    for (let targetField in options) {
-        isRequired = options[targetField] == data[targetField]
+    for (let targetField in params) {
+        isRequired = params[targetField] == data[targetField]
 
         if (!isRequired) {
             break
@@ -528,13 +528,13 @@ export const requiredIf = (value, { data = {}, options = [], message = null }) =
     return required(value, { message })
 }
 
-export const requiredUnless = (value, { data = {}, options = [], message = null }) => {
-    options = arrayToObject(options)
+export const requiredUnless = (value, { data = {}, message = null, params = [] }) => {
+    params = arrayToObject(params)
 
     let isRequired = false
 
-    for (let targetField in options) {
-        isRequired = options[targetField] == data[targetField]
+    for (let targetField in params) {
+        isRequired = params[targetField] == data[targetField]
 
         if (isRequired) {
             break
@@ -548,10 +548,10 @@ export const requiredUnless = (value, { data = {}, options = [], message = null 
     return required(value, { message })
 }
 
-export const requiredWith = (value, { data = {}, options = [], message = null }) => {
+export const requiredWith = (value, { data = {}, message = null, params = [] }) => {
     let isRequired = false
 
-    for (let targetField in options) {
+    for (let targetField in params) {
         isRequired = !isEmpty(data[targetField])
 
         if (isRequired) {
@@ -566,10 +566,10 @@ export const requiredWith = (value, { data = {}, options = [], message = null })
     return required(value, { message })
 }
 
-export const requiredWithAll = (value, { options = [], message = null }) => {
+export const requiredWithAll = (value, { message = null, params = [] }) => {
     let isRequired = true
 
-    for (let targetField in options) {
+    for (let targetField in params) {
         isRequired = !isEmpty(data[targetField])
 
         if (!isRequired) {
@@ -584,10 +584,10 @@ export const requiredWithAll = (value, { options = [], message = null }) => {
     return required(value, { message })
 }
 
-export const requiredWithout = (value, { options = [], message = null }) => {
+export const requiredWithout = (value, { message = null, params = [] }) => {
     let isRequired = true
 
-    for (let targetField in options) {
+    for (let targetField in params) {
         isRequired = isEmpty(data[targetField])
 
         if (!isRequired) {
@@ -602,10 +602,10 @@ export const requiredWithout = (value, { options = [], message = null }) => {
     return required(value, { message })
 }
 
-export const requiredWithoutAll = (value, { options = [], message = null }) => {
+export const requiredWithoutAll = (value, { message = null, params = [] }) => {
     let isRequired = false
 
-    for (let targetField in options) {
+    for (let targetField in params) {
         isRequired = !isEmpty(data[targetField])
 
         if (isRequired) {
@@ -620,8 +620,8 @@ export const requiredWithoutAll = (value, { options = [], message = null }) => {
     return required(value, { message })
 }
 
-export const same = (value, { data = {}, options = [], message = null }) => {
-    const otherfield = options[0]
+export const same = (value, { data = {}, message = null, params = [] }) => {
+    const otherfield = params[0]
     const otherfieldValue = data[otherfield]
 
     const isValid = value == otherfieldValue
@@ -633,10 +633,10 @@ export const same = (value, { data = {}, options = [], message = null }) => {
     return parseMessage(message, messages.same, { $otherfieldValue: otherfieldValue })
 }
 
-export const startsWith = (value, { options = [], message = null }) => {
+export const startsWith = (value, { message = null, params = [] }) => {
     let isValid = false
 
-    for (let option of options) {
+    for (let option of params) {
         if (Array.isArray(value)) {
             isValid = value[0] === option
         } else {
@@ -652,7 +652,7 @@ export const startsWith = (value, { options = [], message = null }) => {
         return true
     }
 
-    return parseMessage(message, messages.startsWith, { $values: options.join(', ') })
+    return parseMessage(message, messages.startsWith, { $values: params.join(', ') })
 }
 
 export const string = (value, { rules = [], message = null }) => {
@@ -665,7 +665,18 @@ export const string = (value, { rules = [], message = null }) => {
     return parseMessage(message, messages.string)
 }
 
-export const url = (value, { options = [], message = null }) => {
+export const typeOf = (value, { message = null, params = [] }) => {
+    const type = params[0]
+    const isValid = typeof value === type
+
+    if (isValid) {
+        return true
+    }
+
+    return parseMessage(message, messages.typeOf, { $type: type })
+}
+
+export const url = (value, { message }) => {
     const isValid = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g.test(value)
 
     if (isValid) {
@@ -675,7 +686,7 @@ export const url = (value, { options = [], message = null }) => {
     return parseMessage(message, messages.url)
 }
 
-export const uuid = (value, { options = [], message = null }) => {
+export const uuid = (value, { message }) => {
     const isValid = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi.test(value)
 
     if (isValid) {

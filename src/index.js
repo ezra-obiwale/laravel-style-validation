@@ -34,27 +34,34 @@ export const asArray = (rules, messages = {}, data = {}, field = null) => {
         throw new Error('Third parameter must be a data object of field to value')
     }
 
-    rules.split('|').map(ruleGroup => {
+    const rulesArray = rules.split('|')
+    const ruleNames = [...rulesArray].map(rule => rule.split(':')[0])
+
+    return rulesArray.map(ruleGroup => {
         const [name] = ruleGroup.split(':')
 
-        return asFunction(ruleGroup, messages[name], data, field)
+        return asFunction(ruleGroup, { data, field, message: messages[name], rules: ruleNames })
     })
 }
 
-export const asFunction = (ruleGroup, message, data = {}, field = null) => {
+export const asFunction = (ruleGroup, options = {}) => {
     if (typeof ruleGroup !== 'string') {
         throw new Error('First parameter must be a string with pattern rule:comma,separated,options')
     }
 
-    if (!isObject(data)) {
-        throw new Error('Third parameter must be a data object of field to value')
+    if (!isObject(options)) {
+        throw new Error('Second parameter must be a data object of field to value')
     }
 
-    const [name, options = ''] = ruleGroup.split(':')
-    const ruleFunc = getRuleFunction(name)
-    const optionsArray = options.split(',')
+    if (options.data && typeof options.data !== 'object') {
+        throw new Error('options.data must be an array')
+    }
 
-    return value => ruleFunc(value, { data, field, message, options: optionsArray })
+    const [name, params = ''] = ruleGroup.split(':')
+    const ruleFunc = getRuleFunction(name)
+    const paramsArray = params.split(',')
+
+    return value => ruleFunc(value, { ...options, params: paramsArray })
 }
 
 export const customRule = (name, func) => {
@@ -67,7 +74,7 @@ export const customRule = (name, func) => {
 
 export const rulesAsArray = (rules, messages = {}, data = {}) => {
     if (!isObject(rules)) {
-        throw new Error('First parameter must be a rules object of field to rules string')
+        throw new Error('First parameter must be a rules object: of field to rules string')
     }
 
     if (!isObject(data)) {
@@ -77,7 +84,7 @@ export const rulesAsArray = (rules, messages = {}, data = {}) => {
     const arrayRules = {}
 
     for (let field in rules) {
-        arrayRules[field] = asArray(rules, messages[field] || {}, data, field)
+        arrayRules[field] = asArray(rules, (messages && messages[field]) || {}, data, field)
     }
 
     return arrayRules
