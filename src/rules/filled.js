@@ -1,7 +1,7 @@
 import { filled as defaultMessage } from '../messages'
 import { parseMessage } from '../utils'
 
-export default filled = (value, { message }) => {
+const filled = (value, { message }) => {
     const invalidValues = [null, undefined, '']
     const isValid = !invalidValues.includes(value)
 
@@ -11,6 +11,8 @@ export default filled = (value, { message }) => {
 
     return parseMessage(message, defaultMessage)
 }
+
+export default filled
 
 export const tests = () => {
 

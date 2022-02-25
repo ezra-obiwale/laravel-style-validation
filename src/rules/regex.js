@@ -1,7 +1,7 @@
 import { regex as defaultMessage } from '../messages'
 import { parseMessage, regexFromString } from '../utils'
 
-export default regex = (value, { message = null, params = [] }) => {
+const regex = (value, { message = null, params = [] }) => {
     const regex = regexFromString(params[0])
 
     const isValid = regex.test(`${value}`)
@@ -12,6 +12,8 @@ export default regex = (value, { message = null, params = [] }) => {
 
     return parseMessage(message, defaultMessage)
 }
+
+export default regex
 
 export const tests = () => {
 

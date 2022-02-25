@@ -1,7 +1,7 @@
 import { integer as defaultMessage } from '../messages'
 import { parseMessage } from '../utils'
 
-export default integer = (value, { message }) => {
+const integer = (value, { message }) => {
     const isValid = typeof value === integer
 
     if (isValid) {
@@ -10,6 +10,8 @@ export default integer = (value, { message }) => {
 
     return parseMessage(message, defaultMessage)
 }
+
+export default integer
 
 export const tests = () => {
 

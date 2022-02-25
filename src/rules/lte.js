@@ -1,7 +1,7 @@
 import { lte as defaultMessage } from '../messages'
 import { parseMessage } from '../utils'
 
-export default lte = (value, { data = {}, message = null, params = [] }) => {
+const lte = (value, { data = {}, message = null, params = [] }) => {
     const otherfield = params[0]
     const otherfieldValue = data[otherfield]
 
@@ -13,6 +13,8 @@ export default lte = (value, { data = {}, message = null, params = [] }) => {
 
     return parseMessage(message, defaultMessage, { $otherfieldValue: otherfieldValue })
 }
+
+export default lte
 
 export const tests = () => {
 

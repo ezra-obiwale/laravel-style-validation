@@ -1,7 +1,7 @@
 import { same as defaultMessage } from '../messages'
 import { parseMessage } from '../utils'
 
-export default same = (value, { data = {}, message = null, params = [] }) => {
+const same = (value, { data = {}, message = null, params = [] }) => {
     const otherfield = params[0]
     const otherfieldValue = data[otherfield]
 
@@ -13,6 +13,8 @@ export default same = (value, { data = {}, message = null, params = [] }) => {
 
     return parseMessage(message, defaultMessage, { $otherfieldValue: otherfieldValue })
 }
+
+export default same
 
 export const tests = () => {
 

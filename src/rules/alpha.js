@@ -1,7 +1,7 @@
 import { alpha as defaultMessage } from '../messages'
 import { parseMessage } from '../utils'
 
-export default alpha = (value, { message }) => {
+const alpha = (value, { message }) => {
     const isValid = /^[a-zA-Z]*$/.test(`${value}`)
 
     if (isValid) {
@@ -10,6 +10,8 @@ export default alpha = (value, { message }) => {
 
     return parseMessage(message, defaultMessage)
 }
+
+export default alpha
 
 export const tests = () => {
 

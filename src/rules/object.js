@@ -1,7 +1,7 @@
 import { object as objectMessage, objectWithKeys as objectWithKeysMessage } from '../messages'
 import { parseMessage } from '../utils'
 
-export default object = (value, { message = null, params = [] }) => {
+const object = (value, { message = null, params = [] }) => {
     let isValid = true
     let defaultMessage = objectMessage
     let replacements = {}
@@ -27,6 +27,8 @@ export default object = (value, { message = null, params = [] }) => {
 
     return parseMessage(message, defaultMessage, replacements)
 }
+
+export default object
 
 export const tests = () => {
 

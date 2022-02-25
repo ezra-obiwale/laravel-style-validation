@@ -1,7 +1,7 @@
 import { $in as defaultMessage } from '../messages'
 import { parseMessage } from '../utils'
 
-export default $in = (value, { message = null, params = [] }) => {
+const $in = (value, { message = null, params = [] }) => {
     const isValid = params.includes(value)
 
     if (isValid) {
@@ -10,6 +10,8 @@ export default $in = (value, { message = null, params = [] }) => {
 
     return parseMessage(message, defaultMessage, { $values: params.join(', ') })
 }
+
+export default $in
 
 export const tests = () => {
 

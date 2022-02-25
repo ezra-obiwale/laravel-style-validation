@@ -1,7 +1,7 @@
 import { lt as defaultMessage } from '../messages'
 import { parseMessage } from '../utils'
 
-export default lt = (value, { data = {}, message = null, params = [] }) => {
+const lt = (value, { data = {}, message = null, params = [] }) => {
     const otherfield = params[0]
     const otherfieldValue = data[otherfield]
 
@@ -13,6 +13,8 @@ export default lt = (value, { data = {}, message = null, params = [] }) => {
 
     return parseMessage(message, defaultMessage, { $otherfieldValue: otherfieldValue })
 }
+
+export default lt
 
 export const tests = () => {
 

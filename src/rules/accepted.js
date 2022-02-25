@@ -1,7 +1,7 @@
 import { accepted as defaultMessage } from '../messages'
 import { parseMessage } from '../utils'
 
-export default accepted = (value, { message }) => {
+const accepted = (value, { message }) => {
     const validValues = ['yes', 'on', 1, true]
     const isValid = validValues.includes(value)
 
@@ -11,6 +11,8 @@ export default accepted = (value, { message }) => {
 
     return parseMessage(message, defaultMessage)
 }
+
+export default accepted
 
 export const tests = () => {
 

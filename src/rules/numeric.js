@@ -1,7 +1,7 @@
 import { nullable as defaultMessage } from '../messages'
 import { parseMessage } from '../utils'
 
-export default numeric = (value, { message }) => {
+const numeric = (value, { message }) => {
     const isValid = !isNaN(value)
 
     if (isValid) {
@@ -10,6 +10,8 @@ export default numeric = (value, { message }) => {
 
     return parseMessage(message, defaultMessage)
 }
+
+export default numeric
 
 export const tests = () => {
 

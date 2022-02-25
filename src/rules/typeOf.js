@@ -1,7 +1,7 @@
 import { typeOf as defaultMessage } from '../messages'
 import { parseMessage } from '../utils'
 
-export default typeOf = (value, { message = null, params = [] }) => {
+const typeOf = (value, { message = null, params = [] }) => {
     const type = params[0]
     const isValid = typeof value === type
 
@@ -11,6 +11,8 @@ export default typeOf = (value, { message = null, params = [] }) => {
 
     return parseMessage(message, defaultMessage, { $type: type })
 }
+
+export default typeOf
 
 export const tests = () => {
 

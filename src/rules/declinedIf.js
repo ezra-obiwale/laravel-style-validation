@@ -2,7 +2,7 @@ import declined from './declined'
 import { declined as declinedMessage, accepted as acceptedMessage } from '../messages'
 import { arrayToObject, parseMessage } from '../utils'
 
-export default declinedIf = (value, { data = {}, message = null, params = [] }) => {
+const declinedIf = (value, { data = {}, message = null, params = [] }) => {
     params = arrayToObject(params)
 
     let declinable = true
@@ -27,6 +27,8 @@ export default declinedIf = (value, { data = {}, message = null, params = [] }) 
 
     return true
 }
+
+export default declinedIf
 
 export const tests = () => {
 

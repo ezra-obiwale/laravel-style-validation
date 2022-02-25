@@ -1,7 +1,7 @@
 import { required as defaultMessage } from '../messages'
 import { parseMessage } from '../utils'
 
-export default required = (value, { message }) => {
+const required = (value, { message }) => {
     const isValid = !isEmpty(value)
 
     if (isValid) {
@@ -10,6 +10,8 @@ export default required = (value, { message }) => {
 
     return parseMessage(message, defaultMessage)
 }
+
+export default required
 
 export const tests = () => {
 

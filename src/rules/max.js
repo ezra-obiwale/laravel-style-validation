@@ -1,7 +1,7 @@
 import { max as defaultMessage } from '../messages'
 import { parseMessage } from '../utils'
 
-export default max = (value, { message = null, params = [] }) => {
+const max = (value, { message = null, params = [] }) => {
     const maxValue = parseFloat(params[0])
 
     const isValid = value <= maxValue
@@ -12,6 +12,8 @@ export default max = (value, { message = null, params = [] }) => {
 
     return parseMessage(message, defaultMessage, { $value: maxValue })
 }
+
+export default max
 
 export const tests = () => {
 

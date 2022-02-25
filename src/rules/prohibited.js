@@ -1,7 +1,7 @@
 import { prohibited as defaultMessage } from '../messages'
 import { parseMessage } from '../utils'
 
-export default prohibited = (value, { field = null, message = null }) => {
+const prohibited = (value, { field = null, message = null }) => {
     const isValid = !field || !data.hasOwnProperty(field) || isEmpty(value)
 
     if (isValid) {
@@ -10,6 +10,8 @@ export default prohibited = (value, { field = null, message = null }) => {
 
     return parseMessage(message, defaultMessage, { $field: field })
 }
+
+export default prohibited
 
 export const tests = () => {
 

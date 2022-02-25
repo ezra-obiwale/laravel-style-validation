@@ -1,7 +1,7 @@
 import { gt as defaultMessage } from '../messages'
 import { parseMessage } from '../utils'
 
-export default gt = (value, { data = {}, message = null, params = [] }) => {
+const gt = (value, { data = {}, message = null, params = [] }) => {
     const otherfield = params[0]
     const otherfieldValue = data[otherfield]
 
@@ -13,6 +13,8 @@ export default gt = (value, { data = {}, message = null, params = [] }) => {
 
     return parseMessage(message, defaultMessage, { $otherfieldValue: otherfieldValue })
 }
+
+export default gt
 
 export const tests = () => {
 

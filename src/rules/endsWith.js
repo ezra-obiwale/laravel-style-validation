@@ -1,7 +1,7 @@
 import { endsWith as defaultMessage } from '../messages'
 import { parseMessage } from '../utils'
 
-export default endsWith = (value, { message = null, params = [] }) => {
+const endsWith = (value, { message = null, params = [] }) => {
     let isValid = false
 
     for (let option of params) {
@@ -22,6 +22,8 @@ export default endsWith = (value, { message = null, params = [] }) => {
 
     return parseMessage(message, defaultMessage, { $values: params.join(', ') })
 }
+
+export default endsWith
 
 export const tests = () => {
 

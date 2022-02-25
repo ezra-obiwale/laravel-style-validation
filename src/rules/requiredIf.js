@@ -1,7 +1,7 @@
 import required from './required'
 import { arrayToObject } from '../utils'
 
-export default requiredIf = (value, { data = {}, message = null, params = [] }) => {
+const requiredIf = (value, { data = {}, message = null, params = [] }) => {
     params = arrayToObject(params)
 
     let isRequired = true
@@ -20,6 +20,8 @@ export default requiredIf = (value, { data = {}, message = null, params = [] }) 
 
     return required(value, { message })
 }
+
+export default requiredIf
 
 export const tests = () => {
 

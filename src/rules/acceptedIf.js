@@ -2,7 +2,7 @@ import accepted from './accepted'
 import { accepted as acceptedMessage, declined as declinedMessage } from '../messages'
 import { arrayToObject, parseMessage } from '../utils'
 
-export default acceptedIf = (value, { data = {}, message = null, params = [] }) => {
+const acceptedIf = (value, { data = {}, message = null, params = [] }) => {
     params = arrayToObject(params)
 
     let acceptable = true
@@ -27,6 +27,8 @@ export default acceptedIf = (value, { data = {}, message = null, params = [] }) 
 
     return true
 }
+
+export default acceptedIf
 
 export const tests = () => {
 

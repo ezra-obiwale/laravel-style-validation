@@ -1,7 +1,7 @@
 import { notIn as defaultMessage } from '../messages'
 import { parseMessage } from '../utils'
 
-export default notIn = (value, { message = null, params = [] }) => {
+const notIn = (value, { message = null, params = [] }) => {
     const isValid = !params.includes(value)
 
     if (isValid) {
@@ -10,6 +10,8 @@ export default notIn = (value, { message = null, params = [] }) => {
 
     return parseMessage(message, defaultMessage, { $values: params.join(', ') })
 }
+
+export default notIn
 
 export const tests = () => {
 

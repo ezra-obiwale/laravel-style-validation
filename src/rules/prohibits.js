@@ -1,7 +1,7 @@
 import { prohibits as defaultMessage } from '../messages'
 import { parseMessage } from '../utils'
 
-export default prohibits = (value, { data = {}, message = null, params = [] }) => {
+const prohibits = (value, { data = {}, message = null, params = [] }) => {
     const prohibitable = !isEmpty(value)
 
     if (!prohibitable) {
@@ -25,6 +25,8 @@ export default prohibits = (value, { data = {}, message = null, params = [] }) =
 
     return parseMessage(message, defaultMessage, { $otherfield: targetField })
 }
+
+export default prohibits
 
 export const tests = () => {
 
