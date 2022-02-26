@@ -1,5 +1,7 @@
-import tests from '../src/rules/tests'
+import * as tests from '../src/rules/tests.js'
 
-for (let test in tests) {
-    test()
-}
+describe('Validation rules', () => {
+    for (let testName in tests) {
+        tests[testName]('This is an error message')
+    }
+})
