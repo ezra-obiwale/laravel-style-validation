@@ -19,11 +19,7 @@ export const arrayToObject = arr => {
     return obj
 }
 
-export const isEmpty = val => val === undefined || val === null || val === ''
-
-export const isObject = obj => typeof obj === 'object' && !Array.isArray(obj) && obj !== null
-
-export const parseMessage = (customMessage, defaultMessage, replacements = {}) => {
+export const chooseMessage = (customMessage, defaultMessage, replacements = {}) => {
     if (customMessage === false) {
         return false
     }
@@ -32,14 +28,12 @@ export const parseMessage = (customMessage, defaultMessage, replacements = {}) =
         customMessage = defaultMessage
     }
 
-    let message = customMessage || defaultMessage
-
-    for (let param in replacements) {
-        message = message.replace(param, replacements[param])
-    }
-
-    return message
+    return parseMessage(`${customMessage || defaultMessage}`, replacements)
 }
+
+export const isEmpty = val => val === undefined || val === null || val === ''
+
+export const isObject = obj => typeof obj === 'object' && !Array.isArray(obj) && obj !== null
 
 export const regexFromString = (str) => {
     if (!str.startsWith('/')) {
@@ -55,4 +49,12 @@ export const regexFromString = (str) => {
     const flags = str.substr(str.lastIndexOf('/') + 1)
 
     return new RegExp(newStr, flags)
+}
+
+export const parseMessage = (message, replacements) => {
+    for (let param in replacements) {
+        message = message.replace(param, replacements[param])
+    }
+
+    return message
 }
