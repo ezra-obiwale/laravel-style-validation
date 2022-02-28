@@ -8,7 +8,7 @@ const acceptedIf = (value, options = {}) => {
     let acceptable = true
 
     for (let targetField in paramsObject) {
-        acceptable = paramsObject[targetField] == data[targetField]
+        acceptable = JSON.stringify(paramsObject[targetField]) === JSON.stringify(data[targetField])
 
         if (!acceptable) {
             break

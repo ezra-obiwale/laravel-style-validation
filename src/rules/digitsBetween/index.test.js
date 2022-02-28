@@ -1,6 +1,6 @@
-import digitsBetween from "."
+import digitsBetween from '.'
 import { digitsBetween as defaultMessage } from '../../messages'
-import { parseMessage } from "../../utils"
+import { parseMessage } from '../../utils'
 
 const customMessage = 'This is a custom message'
 

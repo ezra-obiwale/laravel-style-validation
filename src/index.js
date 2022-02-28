@@ -26,7 +26,7 @@ const getRuleFunction = (name) => {
 const toStudly = (str) => str.replace(/(_|-)+[a-z]/gi, chr => chr[1].toUpperCase())
 
 export const asArray = (rules, messages = {}, data = {}, field = null) => {
-    if (typeof rules !== 'string') {
+    if (typeof rules !== 'string' && !Array.isArray(rules)) {
         throw new Error('First parameter must be a string of rules')
     }
 
@@ -34,7 +34,7 @@ export const asArray = (rules, messages = {}, data = {}, field = null) => {
         throw new Error('Third parameter must be a data object of field to value')
     }
 
-    const rulesArray = rules.split('|')
+    const rulesArray = Array.isArray(rules) ? rules : rules.split('|')
     const ruleNames = [...rulesArray].map(rule => rule.split(':')[0])
 
     return rulesArray.map(ruleGroup => {
@@ -123,7 +123,7 @@ export const validateData = (data, rules, messages = {}) => {
 }
 
 export const validate = (value, rules, messages = {}, data = {}, field = null) => {
-    if (typeof rules !== 'string') {
+    if (typeof rules !== 'string' && !Array.isArray(rules)) {
         throw new Error('Second parameter must a string of rules')
     }
 

@@ -1,5 +1,5 @@
-import integer from "."
-import { integer as defaultMessage } from "../../messages"
+import integer from '.'
+import { integer as defaultMessage } from '../../messages'
 
 describe('integer', () => {
     const customMessage = 'This is a custom message'

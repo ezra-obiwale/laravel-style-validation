@@ -1,7 +1,8 @@
 import { startsWith as defaultMessage } from '../../messages'
 import { chooseMessage } from '../../utils'
 
-const startsWith = (value, { message = null, params = [] }) => {
+const startsWith = (value, options = {}) => {
+    const { message = null, params = [] } = options
     let isValid = false
 
     for (let option of params) {
@@ -24,7 +25,3 @@ const startsWith = (value, { message = null, params = [] }) => {
 }
 
 export default startsWith
-
-export const tests = () => {
-
-}

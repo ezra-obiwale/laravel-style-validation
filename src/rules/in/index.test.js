@@ -1,6 +1,6 @@
-import $in from "."
-import { $in as defaultMessage } from "../../messages"
-import { parseMessage } from "../../utils"
+import $in from '.'
+import { $in as defaultMessage } from '../../messages'
+import { parseMessage } from '../../utils'
 
 describe('in', () => {
     const customMessage = 'This is a custom message'

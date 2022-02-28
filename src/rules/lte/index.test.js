@@ -1,6 +1,6 @@
-import lte from "."
-import { lte as defaultMessage } from "../../messages"
-import { parseMessage } from "../../utils"
+import lte from '.'
+import { lte as defaultMessage } from '../../messages'
+import { parseMessage } from '../../utils'
 
 describe('lte', () => {
     const customMessage = 'This is a custom message'

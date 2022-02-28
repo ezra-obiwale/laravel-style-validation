@@ -1,6 +1,6 @@
-import inArray from "."
-import { inArray as defaultMessage } from "../../messages"
-import { parseMessage } from "../../utils"
+import inArray from '.'
+import { inArray as defaultMessage } from '../../messages'
+import { parseMessage } from '../../utils'
 
 describe('inArray', () => {
     const customMessage = 'This is a custom message'

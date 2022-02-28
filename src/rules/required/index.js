@@ -1,7 +1,8 @@
 import { required as defaultMessage } from '../../messages'
-import { chooseMessage } from '../../utils'
+import { chooseMessage, isEmpty } from '../../utils'
 
-const required = (value, { message }) => {
+const required = (value, options = {}) => {
+    const { message } = options
     const isValid = !isEmpty(value)
 
     if (isValid) {
@@ -12,7 +13,3 @@ const required = (value, { message }) => {
 }
 
 export default required
-
-export const tests = () => {
-
-}

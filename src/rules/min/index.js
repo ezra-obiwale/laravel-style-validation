@@ -1,7 +1,8 @@
 import { min as defaultMessage } from '../../messages'
 import { chooseMessage } from '../../utils'
 
-const min = (value, { message = null, params = [] }) => {
+const min = (value, options = {}) => {
+    const { message = null, params = [] } = options
     const maxValue = parseFloat(params[0])
 
     const isValid = value >= maxValue
@@ -14,7 +15,3 @@ const min = (value, { message = null, params = [] }) => {
 }
 
 export default min
-
-export const tests = () => {
-
-}

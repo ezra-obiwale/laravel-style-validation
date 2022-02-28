@@ -1,11 +1,12 @@
 import { same as defaultMessage } from '../../messages'
 import { chooseMessage } from '../../utils'
 
-const same = (value, { data = {}, message = null, params = [] }) => {
+const same = (value, options = {}) => {
+    const { data = {}, message = null, params = [] } = options
     const otherfield = params[0]
     const otherfieldValue = data[otherfield]
 
-    const isValid = value == otherfieldValue
+    const isValid = JSON.stringify(value) === JSON.stringify(otherfieldValue)
 
     if (isValid) {
         return true
@@ -15,7 +16,3 @@ const same = (value, { data = {}, message = null, params = [] }) => {
 }
 
 export default same
-
-export const tests = () => {
-
-}

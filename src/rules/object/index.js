@@ -1,7 +1,8 @@
 import { object as objectMessage, objectWithKeys as objectWithKeysMessage } from '../../messages'
-import { chooseMessage } from '../../utils'
+import { chooseMessage, isObject } from '../../utils'
 
-const object = (value, { message = null, params = [] }) => {
+const object = (value, options = {}) => {
+    const { message = null, params = [] } = options
     let isValid = true
     let defaultMessage = objectMessage
     let replacements = {}
@@ -29,7 +30,3 @@ const object = (value, { message = null, params = [] }) => {
 }
 
 export default object
-
-export const tests = () => {
-
-}

@@ -1,28 +1,26 @@
-import prohibited from './prohibited'
+import prohibited from '../prohibited'
 import { arrayToObject } from '../../utils'
 
-const prohibitedUnless = (value, { message = null, params = [] }) => {
-    params = arrayToObject(params)
+const prohibitedUnless = (value, options = {}) => {
+    const { data = {}, field = null, message = null, params = [] } = options
+    const paramsObject = arrayToObject(params)
 
     let prohibitable = true
 
-    for (let targetField in params) {
-        prohibitable = data[targetField] == params[targetField]
+    for (let targetField in paramsObject) {
+        prohibitable = JSON.stringify(data[targetField]) === JSON.stringify(paramsObject[targetField])
 
-        if (!prohibitable) {
+        if (prohibitable) {
             break
         }
     }
 
-    if (prohibitable) {
+    console.log(paramsObject, prohibitable)
+    if (!prohibitable) {
         return true
     }
 
-    return prohibited(value, { field, message })
+    return prohibited(value, { data, field, message })
 }
 
 export default prohibitedUnless
-
-export const tests = () => {
-
-}

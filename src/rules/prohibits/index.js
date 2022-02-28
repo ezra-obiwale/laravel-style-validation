@@ -1,7 +1,8 @@
 import { prohibits as defaultMessage } from '../../messages'
-import { chooseMessage } from '../../utils'
+import { chooseMessage, isEmpty } from '../../utils'
 
-const prohibits = (value, { data = {}, message = null, params = [] }) => {
+const prohibits = (value, options = {}) => {
+    const { data = {}, message = null, params = [] } = options
     const prohibitable = !isEmpty(value)
 
     if (!prohibitable) {
@@ -12,7 +13,7 @@ const prohibits = (value, { data = {}, message = null, params = [] }) => {
     let targetField
 
     for (targetField of params) {
-        isValid = !data.hasOwnProperty(targetField) || isEmpty(data[targetField])
+        isValid = !data.hasOwnProperty(targetField)
 
         if (!isValid) {
             break
@@ -27,7 +28,3 @@ const prohibits = (value, { data = {}, message = null, params = [] }) => {
 }
 
 export default prohibits
-
-export const tests = () => {
-
-}

@@ -1,7 +1,8 @@
 import { present as defaultMessage } from '../../messages'
 import { chooseMessage } from '../../utils'
 
-const present = (value, { data = {}, field = null, message = null }) => {
+const present = (value, options = {}) => {
+    const { data = {}, field = null, message = null } = options
     const isValid = field && data.hasOwnProperty(field)
 
     if (isValid) {
@@ -12,7 +13,3 @@ const present = (value, { data = {}, field = null, message = null }) => {
 }
 
 export default present
-
-export const tests = () => {
-
-}

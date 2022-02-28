@@ -1,15 +1,16 @@
-import required from './required'
+import required from '../required'
 import { arrayToObject } from '../../utils'
 
-const requiredIf = (value, { data = {}, message = null, params = [] }) => {
-    params = arrayToObject(params)
+const requiredIf = (value, options = {}) => {
+    const { data = {}, message = null, params = [] } = options
+    const paramsObject = arrayToObject(params)
 
-    let isRequired = true
+    let isRequired = false
 
-    for (let targetField in params) {
-        isRequired = params[targetField] == data[targetField]
+    for (let targetField in paramsObject) {
+        isRequired = JSON.stringify(paramsObject[targetField]) === JSON.stringify(data[targetField])
 
-        if (!isRequired) {
+        if (isRequired) {
             break
         }
     }
@@ -22,7 +23,3 @@ const requiredIf = (value, { data = {}, message = null, params = [] }) => {
 }
 
 export default requiredIf
-
-export const tests = () => {
-
-}

@@ -1,7 +1,8 @@
-import { nullable as defaultMessage } from '../../messages'
+import { numeric as defaultMessage } from '../../messages'
 import { chooseMessage } from '../../utils'
 
-const numeric = (value, { message }) => {
+const numeric = (value, options = {}) => {
+    const { message } = options
     const isValid = !isNaN(value)
 
     if (isValid) {
@@ -12,7 +13,3 @@ const numeric = (value, { message }) => {
 }
 
 export default numeric
-
-export const tests = () => {
-
-}

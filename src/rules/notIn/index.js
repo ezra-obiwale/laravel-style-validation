@@ -1,7 +1,8 @@
 import { notIn as defaultMessage } from '../../messages'
 import { chooseMessage } from '../../utils'
 
-const notIn = (value, { message = null, params = [] }) => {
+const notIn = (value, options = {}) => {
+    const { message = null, params = [] } = options
     const isValid = !params.includes(value)
 
     if (isValid) {
@@ -12,7 +13,3 @@ const notIn = (value, { message = null, params = [] }) => {
 }
 
 export default notIn
-
-export const tests = () => {
-
-}

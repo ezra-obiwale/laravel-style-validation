@@ -5,8 +5,6 @@ const integer = (value, options = {}) => {
     const { message } = options
     const isValid = parseInt(value) === value
 
-    console.log(value, typeof value)
-
     if (isValid) {
         return true
     }

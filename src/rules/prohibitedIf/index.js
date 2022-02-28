@@ -1,13 +1,14 @@
-import prohibited from './prohibited'
+import prohibited from '../prohibited'
 import { arrayToObject } from '../../utils'
 
-const prohibitedIf = (value, { data = {}, field = null, message = null, params = [] }) => {
-    params = arrayToObject(params)
+const prohibitedIf = (value, options = {}) => {
+    const { data = {}, field = null, message = null, params = [] } = options
+    const paramsObject = arrayToObject(params)
 
     let prohibitable = true
 
-    for (let targetField in params) {
-        prohibitable = data[targetField] == params[targetField]
+    for (let targetField in paramsObject) {
+        prohibitable = JSON.stringify(data[targetField]) === JSON.stringify(paramsObject[targetField])
 
         if (!prohibitable) {
             break
@@ -18,11 +19,7 @@ const prohibitedIf = (value, { data = {}, field = null, message = null, params =
         return true
     }
 
-    return prohibited(value, { field, message })
+    return prohibited(value, { data, field, message })
 }
 
 export default prohibitedIf
-
-export const tests = () => {
-
-}

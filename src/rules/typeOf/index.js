@@ -1,7 +1,8 @@
 import { typeOf as defaultMessage } from '../../messages'
 import { chooseMessage } from '../../utils'
 
-const typeOf = (value, { message = null, params = [] }) => {
+const typeOf = (value, options = {}) => {
+    const { message = null, params = [] } = options
     const type = params[0]
     const isValid = typeof value === type
 
@@ -13,7 +14,3 @@ const typeOf = (value, { message = null, params = [] }) => {
 }
 
 export default typeOf
-
-export const tests = () => {
-
-}

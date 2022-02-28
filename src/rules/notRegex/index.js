@@ -1,7 +1,8 @@
 import { notRegex as defaultMessage } from '../../messages'
 import { chooseMessage, regexFromString } from '../../utils'
 
-const notRegex = (value, { message = null, params = [] }) => {
+const notRegex = (value, options = {}) => {
+    const { message = null, params = [] } = options
     const regex = regexFromString(params[0])
 
     const isValid = !regex.test(`${value}`)
@@ -14,7 +15,3 @@ const notRegex = (value, { message = null, params = [] }) => {
 }
 
 export default notRegex
-
-export const tests = () => {
-
-}

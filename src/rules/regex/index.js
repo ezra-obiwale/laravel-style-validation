@@ -1,7 +1,8 @@
 import { regex as defaultMessage } from '../../messages'
 import { chooseMessage, regexFromString } from '../../utils'
 
-const regex = (value, { message = null, params = [] }) => {
+const regex = (value, options = {}) => {
+    const { message = null, params = [] } = options
     const regex = regexFromString(params[0])
 
     const isValid = regex.test(`${value}`)
@@ -14,7 +15,3 @@ const regex = (value, { message = null, params = [] }) => {
 }
 
 export default regex
-
-export const tests = () => {
-
-}

@@ -1,18 +1,11 @@
-import { nullable as defaultMessage } from '../../messages'
-import { chooseMessage, isEmpty } from '../../utils'
+const nullable = (value, options = {}) => {
+    const { data = {}, field = null } = options
 
-const nullable = (value, { message }) => {
-    const isValid = isEmpty(value)
-
-    if (isValid) {
-        return true
+    if (field && data[field] === undefined) {
+        data[field] = null
     }
 
-    return chooseMessage(message, defaultMessage)
+    return true
 }
 
 export default nullable
-
-export const tests = () => {
-
-}

@@ -1,13 +1,14 @@
-import required from './required'
+import required from '../required'
 import { isEmpty } from '../../utils'
 
-const requiredWithoutAll = (value, { message = null, params = [] }) => {
+const requiredWithoutAll = (value, options = {}) => {
+    const { data = {}, message = null, params = [] } = options
     let isRequired = false
 
-    for (let targetField in params) {
-        isRequired = !isEmpty(data[targetField])
+    for (let targetField of params) {
+        isRequired = isEmpty(data[targetField])
 
-        if (isRequired) {
+        if (!isRequired) {
             break
         }
     }
@@ -20,7 +21,3 @@ const requiredWithoutAll = (value, { message = null, params = [] }) => {
 }
 
 export default requiredWithoutAll
-
-export const tests = () => {
-
-}

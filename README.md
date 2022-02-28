@@ -17,12 +17,12 @@ npm install @ezraobiwale/vuravel-validation
 ```javascript
 import { validate } from '@ezraobiwale/vuravel-validation'
 
-// Signature: validate(<any> value[, <string> rules, <string|null|false> message, <object> data, <string> field])
+// Signature: validate(<any> value[, <string|array> rules, <string|null|false> message, <object> data, <string> field])
 
 const username = 'ezra-obiwale'
 
 validate(username, 'required|alpha_num') // TRUE
-validate(username, 'required|alpha') // "Value must only contain alphabets"
+validate(username, ['required', 'alpha]) // "Value must only contain alphabets"
 validate(username, 'required|alpha', false) // FALSE
 
 const messages = {
@@ -32,7 +32,7 @@ const messages = {
 validate(username, 'required|alpha', messages) // "Username can only be alphabets"
 
 const year = 2022
-validate(year, 'required|numeric|between:2000,2050') // TRUE
+validate(year, ['required', 'numeric', 'between:2000,2050']) // TRUE
 
 // With other data
 validate(year, 'required|numeric|between:2000,2050|different:nextYear', null, { nextYear: 2023 }) // true
@@ -56,7 +56,7 @@ const data = {
 
 const rules = {
   username: 'required|alpha',
-  year: 'required|numeric|between:2000,2050|different:nextYear',
+  year: ['required', 'numeric', 'between:2000,2050', 'different:nextYear'],
 }
 
 validateData(data, rules)
@@ -108,7 +108,7 @@ validateData(data, rules, false) // Disable error messages for all fields
 
 ### Helper functions
 
-- `asArray(<string> rules[, <object> messages, <object> data, <string> field])`
+- `asArray(<string|array> rules[, <object> messages, <object> data, <string> field])`
 
   Converts a string of rules to the appropriate functions, which then takes just the value.
 
@@ -116,6 +116,7 @@ validateData(data, rules, false) // Disable error messages for all fields
   import { asArray } from '@ezraobiwale/vuravel-validation'
 
   asArray('required|numeric|between:2000,2050|different:nextYear')
+  asArray(['required', 'numeric', 'between:2000,2050', 'different:nextYear'])
   // [function, function, function, function]
   ```
 
@@ -183,7 +184,7 @@ validateData(data, rules, false) // Disable error messages for all fields
 | `max:value`                              | Value must be less than or equal to [value]                              |
 | `min:value`                              | Value must be more than or equal to [value]                              |
 | `not_in:foo,bar,...`                     | Value must not be one of [foo, bar, ...]                                 |
-| `not_regex:pattern`                      | Value is invalid                                                         |
+| `not_regex:pattern`                      | Value doesn't match the expected pattern                                                         |
 | `nullable`                               | -                                                                        |
 | `numeric`                                | Value must be a number                                                   |
 | `object[:foo,bar,...]`                   | Value must be an object [with keys [foo, bar, ...]]                      |
@@ -192,7 +193,7 @@ validateData(data, rules, false) // Disable error messages for all fields
 | `prohibited_if:otherfield,value,...`     | [field] is not allowed                                                   |
 | `prohibited_unless:otherfield,value,...` | [field] is not allowed                                                   |
 | `prohibits:otherfield,...`               | [otherfield] is not allowed                                              |
-| `regex:pattern`                          | Value is invalid                                                         |
+| `regex:pattern`                          | Value doesn't match the expected pattern                                                         |
 | `required`                               | Value is required                                                        |
 | `required_if:anotherfield,value,...`     | Value is required                                                        |
 | `required_unless:anotherfield,value,...` | Value is required                                                        |
@@ -206,6 +207,8 @@ validateData(data, rules, false) // Disable error messages for all fields
 | `type_of:<type>`                         | Value must be a $type                                                 |
 | `url`                                    | Value must be a valid url                                                |
 | `uuid`                                   | Value must a valid uuid                                                  |
+
+> When using the `regex` / `not_regex` patterns, it may be necessary to specify rules in an array instead of using `|` delimiters, especially if the regular expression contains a `|` character.
 
 ### Custom rules
 

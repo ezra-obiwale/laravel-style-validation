@@ -1,8 +1,9 @@
 import { prohibited as defaultMessage } from '../../messages'
 import { chooseMessage } from '../../utils'
 
-const prohibited = (value, { field = null, message = null }) => {
-    const isValid = !field || !data.hasOwnProperty(field) || isEmpty(value)
+const prohibited = (value, options = {}) => {
+    const { data = {}, field = null, message = null } = options
+    const isValid = !field || !data.hasOwnProperty(field)
 
     if (isValid) {
         return true
@@ -12,7 +13,3 @@ const prohibited = (value, { field = null, message = null }) => {
 }
 
 export default prohibited
-
-export const tests = () => {
-
-}

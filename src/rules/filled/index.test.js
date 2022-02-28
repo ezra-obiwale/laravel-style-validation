@@ -1,5 +1,5 @@
-import filled from "."
-import { filled as defaultMessage } from "../../messages"
+import filled from '.'
+import { filled as defaultMessage } from '../../messages'
 
 describe('filled', () => {
     const customMessage = 'This is a custom message'

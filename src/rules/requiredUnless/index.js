@@ -1,13 +1,14 @@
-import required from './required'
+import required from '../required'
 import { arrayToObject } from '../../utils'
 
-const requiredUnless = (value, { data = {}, message = null, params = [] }) => {
-    params = arrayToObject(params)
+const requiredUnless = (value, options = {}) => {
+    const { data = {}, message = null, params = [] } = options
+    const paramsObject = arrayToObject(params)
 
     let isRequired = false
 
-    for (let targetField in params) {
-        isRequired = params[targetField] == data[targetField]
+    for (let targetField in paramsObject) {
+        isRequired = paramsObject[targetField] != data[targetField]
 
         if (isRequired) {
             break
@@ -22,7 +23,3 @@ const requiredUnless = (value, { data = {}, message = null, params = [] }) => {
 }
 
 export default requiredUnless
-
-export const tests = () => {
-
-}

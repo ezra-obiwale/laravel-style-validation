@@ -8,7 +8,7 @@ const declinedIf = (value, options = {}) => {
     let declinable = true
 
     for (let targetField in paramsObject) {
-        declinable = paramsObject[targetField] == data[targetField]
+        declinable = JSON.stringify(paramsObject[targetField]) === JSON.stringify(data[targetField])
 
         if (!declinable) {
             break

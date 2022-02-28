@@ -1,7 +1,8 @@
-import { startsWith as defaultMessage } from '../../messages'
-import { chooseMessage } from '../../utils'
+import { string as defaultMessage } from '../../messages'
+import { chooseMessage, isEmpty } from '../../utils'
 
-const string = (value, { rules = [], message = null }) => {
+const string = (value, options = {}) => {
+    const { rules = [], message = null } = options
     const isValid = typeof value === 'string' || (rules.includes('nullable') && isEmpty(value))
 
     if (isValid) {
@@ -12,7 +13,3 @@ const string = (value, { rules = [], message = null }) => {
 }
 
 export default string
-
-export const tests = () => {
-
-}

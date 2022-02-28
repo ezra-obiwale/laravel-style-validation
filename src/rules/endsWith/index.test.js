@@ -1,5 +1,5 @@
 import endsWith from '.'
-import { endsWith as defaultMessage } from "../../messages"
+import { endsWith as defaultMessage } from '../../messages'
 import { parseMessage } from '../../utils'
 
 describe('endsWith', () => {
