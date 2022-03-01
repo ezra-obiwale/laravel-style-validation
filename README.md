@@ -217,6 +217,8 @@ Rules that are not created by default can be added and used like regular rules.
 ```javascript
 import { customRule, validate } from '@ezraobiwale/vuravel-validation'
 
+// Signature: customRule(<string> name, <function> validator[, <boolean> override])
+
 // define the rule
 const allowedOptions = (value, { data, field, message, params, rules }) => {
   const isValid = params.includes(value)
@@ -251,6 +253,9 @@ const allowedOptions = (value, { data, field, message, params, rules }) => {
 
 // register the rule
 customRule('allowed_options', allowedOptions)
+
+// override existing custom rule
+customRule('allowed_options', newAllowedOptions, true)
 
 // use with other rules
 validate('yes', 'allowed_options:yes,no,maybe|accepted') // TRUE

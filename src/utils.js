@@ -51,7 +51,7 @@ export const regexFromString = (str) => {
     return new RegExp(newStr, flags)
 }
 
-export const parseMessage = (message, replacements) => {
+export const parseMessage = (message, replacements = {}) => {
     for (let param in replacements) {
         message = message.replace(param, replacements[param])
     }

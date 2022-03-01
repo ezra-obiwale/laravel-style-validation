@@ -3,7 +3,7 @@ import { isObject } from './utils'
 
 const customRules = {}
 
-const getRuleFunction = (name) => {
+const getAvailableRuleFunction = (name) => {
     const studlyName = toStudly(name)
 
     if (availableRules.hasOwnProperty(studlyName)) {
@@ -14,6 +14,16 @@ const getRuleFunction = (name) => {
 
     if (availableRules.hasOwnProperty(otherStudlyName)) {
         return availableRules[otherStudlyName]
+    }
+
+    return
+}
+
+const getRuleFunction = (name) => {
+    const availableRuleFn = getAvailableRuleFunction(name)
+
+    if (availableRuleFn) {
+        return availableRuleFn
     }
 
     if (customRules.hasOwnProperty(name)) {
@@ -39,8 +49,9 @@ export const asArray = (rules, messages = {}, data = {}, field = null) => {
 
     return rulesArray.map(ruleGroup => {
         const [name] = ruleGroup.split(':')
+        const message = isObject(messages) ? messages[name] : messages
 
-        return asFunction(ruleGroup, { data, field, message: messages[name], rules: ruleNames })
+        return asFunction(ruleGroup, { data, field, message: message, rules: ruleNames })
     })
 }
 
@@ -53,18 +64,26 @@ export const asFunction = (ruleGroup, options = {}) => {
         throw new Error('Second parameter must be a data object of field to value')
     }
 
-    if (options.data && typeof options.data !== 'object') {
+    if (options.hasOwnProperty('data') && !isObject(options.data)) {
         throw new Error('options.data must be an array')
     }
 
     const [name, params = ''] = ruleGroup.split(':')
     const ruleFunc = getRuleFunction(name)
-    const paramsArray = params.split(',')
+    const paramsArray = params.split(',').filter(val => !!val.length)
 
     return value => ruleFunc(value, { ...options, params: paramsArray })
 }
 
-export const customRule = (name, func) => {
+export const customRule = (name, func, override = false) => {
+    if (getAvailableRuleFunction(name)) {
+        throw new Error(`In-built rule "${name}" already exists`)
+    }
+
+    if (customRules.hasOwnProperty(name) && !override) {
+        throw new Error(`Custom rule "${name}" already exists`)
+    }
+
     if (typeof func !== 'function') {
         throw new Error('Second parameter must be a function')
     }
@@ -84,10 +103,31 @@ export const rulesAsArray = (rules, messages = {}, data = {}) => {
     const arrayRules = {}
 
     for (let field in rules) {
-        arrayRules[field] = asArray(rules, (messages && messages[field]) || {}, data, field)
+        arrayRules[field] = asArray(rules[field], (messages && messages[field]) || {}, data, field)
     }
 
     return arrayRules
+}
+
+export const validate = (value, rules, messages = {}, data = {}, field = null) => {
+    if (typeof rules !== 'string' && !Array.isArray(rules)) {
+        throw new Error('Second parameter must a string of rules')
+    }
+
+    if (!isObject(data)) {
+        throw new Error('Fourth parameter must be a data object of field to value')
+    }
+
+    const disposableFieldRules = asArray(rules, messages, data, field)
+    let valid = true
+
+    while (valid && disposableFieldRules.length) {
+        const currentRule = disposableFieldRules.shift()
+
+        valid = currentRule(value)
+    }
+
+    return valid
 }
 
 export const validateData = (data, rules, messages = {}) => {
@@ -120,25 +160,4 @@ export const validateData = (data, rules, messages = {}) => {
     }
 
     return result
-}
-
-export const validate = (value, rules, messages = {}, data = {}, field = null) => {
-    if (typeof rules !== 'string' && !Array.isArray(rules)) {
-        throw new Error('Second parameter must a string of rules')
-    }
-
-    if (!isObject(data)) {
-        throw new Error('Fourth parameter must be a data object of field to value')
-    }
-
-    const disposableFieldRules = asArray(rules, data, messages, field)
-    let valid = true
-
-    while (valid && disposableFieldRules.length) {
-        const currentRule = disposableFieldRules.shift()
-
-        valid = currentRule(value)
-    }
-
-    return valid
 }

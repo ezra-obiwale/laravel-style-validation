@@ -15,7 +15,6 @@ const prohibitedUnless = (value, options = {}) => {
         }
     }
 
-    console.log(paramsObject, prohibitable)
     if (!prohibitable) {
         return true
     }

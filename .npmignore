@@ -1,0 +1,8 @@
+coverage
+node_modules
+src
+tests
+babel.config.js
+docker-compose.yml
+Dockerfile
+jest.config.js
