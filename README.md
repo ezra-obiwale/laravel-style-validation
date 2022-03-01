@@ -1,13 +1,13 @@
-# vuravel-validation
+# laravel-style-validation
 
-Vue validations, the [Laravel]() way.
+Validations, the [Laravel](https://laravel.com/docs/9.x/validation#available-validation-rules) way.
 
 ## Installation
 
 ```javascript
-yarn add @ezraobiwale/vuravel-validation
+yarn add @ezraobiwale/laravel-style-validation
 // or
-npm install @ezraobiwale/vuravel-validation
+npm install @ezraobiwale/laravel-style-validation
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ npm install @ezraobiwale/vuravel-validation
 ### Validate a single value
 
 ```javascript
-import { validate } from '@ezraobiwale/vuravel-validation'
+import { validate } from '@ezraobiwale/laravel-style-validation'
 
 // Signature: validate(<any> value[, <string|array> rules, <string|null|false> message, <object> data, <string> field])
 
@@ -44,7 +44,7 @@ validate(year, 'present', false, { nextYear: 2023 }, 'year') // FALSE
 ### Validate a data object
 
 ```javascript
-import { validateData } from '@ezraobiwale/vuravel-validation'
+import { validateData } from '@ezraobiwale/laravel-style-validation'
 
 // Signature: validateData(<object> data, <object> rules[, <object|false> messages])
 
@@ -113,7 +113,7 @@ validateData(data, rules, false) // Disable error messages for all fields
   Converts a string of rules to the appropriate functions, which then takes just the value.
 
   ```javascript
-  import { asArray } from '@ezraobiwale/vuravel-validation'
+  import { asArray } from '@ezraobiwale/laravel-style-validation'
 
   asArray('required|numeric|between:2000,2050|different:nextYear')
   asArray(['required', 'numeric', 'between:2000,2050', 'different:nextYear'])
@@ -129,7 +129,7 @@ validateData(data, rules, false) // Disable error messages for all fields
   Converts a rule group to a function which accepts the value to validate.
 
   ```javascript
-  import { asFunction } from '@ezraobiwale/vuravel-validation'
+  import { asFunction } from '@ezraobiwale/laravel-style-validation'
 
   asFunction('between:2000,2050', { data, field, message }) // function
   ```
@@ -141,7 +141,7 @@ validateData(data, rules, false) // Disable error messages for all fields
   Applies `asArray` to an object of field to rules.
 
   ```javascript
-  import { rulesAsArray } from '@ezraobiwale/vuravel-validation'
+  import { rulesAsArray } from '@ezraobiwale/laravel-style-validation'
 
   rulesAsArray({
     username: 'required|alpha',
@@ -215,7 +215,7 @@ validateData(data, rules, false) // Disable error messages for all fields
 Rules that are not created by default can be added and used like regular rules.
 
 ```javascript
-import { customRule, validate } from '@ezraobiwale/vuravel-validation'
+import { customRule, validate } from '@ezraobiwale/laravel-style-validation'
 
 // Signature: customRule(<string> name, <function> validator[, <boolean> override])
 
@@ -265,8 +265,8 @@ validate('yes', 'allowed_options:yes,no,maybe|accepted') // TRUE
 
 > For easy and quick dev/build, you should have Docker and Docker Compose installed.
 
-- Clone repository - `git clone https://github.com/ezra-obiwale/vuravel-validation.git`
+- Clone repository - `git clone https://github.com/ezra-obiwale/laravel-style-validation.git`
 - Build docker service - `docker-compose build`
 - Start docker container - `docker-compose up -d`
-- Run tests - `docker-compose exec vuravel yarn test`
-- Build - `docker-compose exec vuravel yarn build`
+- Run tests - `docker-compose exec valiation yarn test`
+- Build - `docker-compose exec valiation yarn build`

@@ -1,7 +1,7 @@
 # for local development
 version: "3.7"
 services:
-  vuravel:
+  validation:
     image: dscribe/basic-node
     build:
       context: .
