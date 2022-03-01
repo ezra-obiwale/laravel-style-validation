@@ -260,3 +260,13 @@ customRule('allowed_options', newAllowedOptions, true)
 // use with other rules
 validate('yes', 'allowed_options:yes,no,maybe|accepted') // TRUE
 ```
+
+## Contributing
+
+> For easy and quick dev/build, you should have Docker and Docker Compose installed.
+
+- Clone repository - `git clone https://github.com/ezra-obiwale/vuravel-validation.git`
+- Build docker service - `docker-compose build`
+- Start docker container - `docker-compose up -d`
+- Run tests - `docker-compose exec vuravel yarn test`
+- Build - `docker-compose exec vuravel yarn build`

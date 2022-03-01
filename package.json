@@ -2,7 +2,7 @@
   "name": "@ezraobiwale/vuravel-validation",
   "version": "1.0.0",
   "description": "Vue validations, the Laravel way",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "repository": "https://github.com/ezra-obiwale/vuravel-validation",
   "author": "Ezra Obiwale <ezra.obiwale@gmail.com>",
   "license": "MIT",
