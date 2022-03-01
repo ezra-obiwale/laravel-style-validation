@@ -1,6 +1,6 @@
 {
   "name": "@ezraobiwale/vuravel-validation",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Vue validations, the Laravel way",
   "main": "dist/index.js",
   "repository": "https://github.com/ezra-obiwale/vuravel-validation",
@@ -10,6 +10,7 @@
     "@babel/cli": "^7.17.6",
     "@babel/core": "^7.17.5",
     "@babel/preset-env": "^7.16.11",
+    "babel-preset-minify": "^0.5.1",
     "jest": "^27.5.1",
     "node-notifier": "^10.0.1"
   },
