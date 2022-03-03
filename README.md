@@ -22,7 +22,7 @@ import { validate } from '@ezraobiwale/laravel-style-validation'
 const username = 'ezra-obiwale'
 
 validate(username, 'required|alpha_num') // TRUE
-validate(username, ['required', 'alpha]) // "Value must only contain alphabets"
+validate(username, ['required', 'alpha']) // "Value must only contain alphabets"
 validate(username, 'required|alpha', false) // FALSE
 
 const messages = {
