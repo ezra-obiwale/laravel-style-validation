@@ -35,7 +35,7 @@ const getRuleFunction = (name) => {
 
 const toStudly = (str) => str.replace(/(_|-)+[a-z]/gi, chr => chr[1].toUpperCase())
 
-export const asArray = (rules, messages = {}, data = {}, field = null) => {
+export const asFunctionArray = (rules, messages = {}, data = {}, field = null) => {
     if (typeof rules !== 'string' && !Array.isArray(rules)) {
         throw new Error('First parameter must be a string of rules')
     }
@@ -91,7 +91,7 @@ export const customRule = (name, func, override = false) => {
     customRules[name] = func
 }
 
-export const rulesAsArray = (rules, messages = {}, data = {}) => {
+export const rulesAsFunctionArray = (rules, messages = {}, data = {}) => {
     if (!isObject(rules)) {
         throw new Error('First parameter must be a rules object: of field to rules string')
     }
@@ -103,7 +103,7 @@ export const rulesAsArray = (rules, messages = {}, data = {}) => {
     const arrayRules = {}
 
     for (let field in rules) {
-        arrayRules[field] = asArray(rules[field], (messages && messages[field]) || {}, data, field)
+        arrayRules[field] = asFunctionArray(rules[field], (messages && messages[field]) || {}, data, field)
     }
 
     return arrayRules
@@ -118,7 +118,7 @@ export const validate = (value, rules, messages = {}, data = {}, field = null) =
         throw new Error('Fourth parameter must be a data object of field to value')
     }
 
-    const disposableFieldRules = asArray(rules, messages, data, field)
+    const disposableFieldRules = asFunctionArray(rules, messages, data, field)
     let valid = true
 
     while (valid && disposableFieldRules.length) {

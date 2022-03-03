@@ -108,15 +108,15 @@ validateData(data, rules, false) // Disable error messages for all fields
 
 ### Helper functions
 
-- `asArray(<string|array> rules[, <object> messages, <object> data, <string> field])`
+- `asFunctionArray(<string|array> rules[, <object> messages, <object> data, <string> field])`
 
   Converts a string of rules to the appropriate functions, which then takes just the value.
 
   ```javascript
-  import { asArray } from '@ezraobiwale/laravel-style-validation'
+  import { asFunctionArray } from '@ezraobiwale/laravel-style-validation'
 
-  asArray('required|numeric|between:2000,2050|different:nextYear')
-  asArray(['required', 'numeric', 'between:2000,2050', 'different:nextYear'])
+  asFunctionArray('required|numeric|between:2000,2050|different:nextYear')
+  asFunctionArray(['required', 'numeric', 'between:2000,2050', 'different:nextYear'])
   // [function, function, function, function]
   ```
 
@@ -136,14 +136,14 @@ validateData(data, rules, false) // Disable error messages for all fields
 
   > The returned function takes only one parameter which is the value to validate.
 
-- `rulesAsArray(<object> rules[, <object> messages, <object> data])`
+- `rulesAsFunctionArray(<object> rules[, <object> messages, <object> data])`
 
-  Applies `asArray` to an object of field to rules.
+  Applies `asFunctionArray` to an object of field to rules.
 
   ```javascript
-  import { rulesAsArray } from '@ezraobiwale/laravel-style-validation'
+  import { rulesAsFunctionArray } from '@ezraobiwale/laravel-style-validation'
 
-  rulesAsArray({
+  rulesAsFunctionArray({
     username: 'required|alpha',
     year: 'required|numeric|between:2000,2050|different:nextYear',
   })

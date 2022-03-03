@@ -1,25 +1,25 @@
-import { asArray, asFunction, customRule, rulesAsArray, validate, validateData } from "../src"
+import { asFunctionArray, asFunction, customRule, rulesAsFunctionArray, validate, validateData } from "../src"
 import { alphaDash as alphaDashMessage, numeric as numericMessage, same as sameMessage } from "../src/messages"
 import { chooseMessage, parseMessage } from "../src/utils"
 
 describe('public methods', () => {
-    describe('asArray', () => {
+    describe('asFunctionArray', () => {
         test('valid', () => {
             const stringRules = 'required|string|same:confirm_password'
             const arrayRules = ['required', 'string', 'same:confirm_password']
 
-            expect(asArray(stringRules))
+            expect(asFunctionArray(stringRules))
                 .toHaveLength(3)
-            expect(asArray(stringRules))
+            expect(asFunctionArray(stringRules))
                 .toEqual(
                     expect.arrayContaining(
                         [expect.any(Function), expect.any(Function), expect.any(Function)]
                     )
                 )
 
-            expect(asArray(arrayRules))
+            expect(asFunctionArray(arrayRules))
                 .toHaveLength(3)
-            expect(asArray(arrayRules))
+            expect(asFunctionArray(arrayRules))
                 .toEqual(
                     expect.arrayContaining(
                         [expect.any(Function), expect.any(Function), expect.any(Function)]
@@ -28,13 +28,13 @@ describe('public methods', () => {
         })
 
         test('invalid', () => {
-            expect(() => asArray('nonExistentRule'))
+            expect(() => asFunctionArray('nonExistentRule'))
                 .toThrowError('Validation rule "nonExistentRule" does not exist.')
 
-            expect(() => asArray({}))
+            expect(() => asFunctionArray({}))
                 .toThrowError('First parameter must be a string of rules')
 
-            expect(() => asArray('required', false, null))
+            expect(() => asFunctionArray('required', false, null))
                 .toThrowError('Third parameter must be a data object of field to value')
         })
     })
@@ -71,7 +71,7 @@ describe('public methods', () => {
                 password: ['required', 'string']
             }
 
-            expect(rulesAsArray(rules1))
+            expect(rulesAsFunctionArray(rules1))
                 .toEqual(
                     expect.objectContaining({
                         username: expect.arrayContaining(
@@ -84,7 +84,7 @@ describe('public methods', () => {
 
                 )
 
-            expect(rulesAsArray(rules2))
+            expect(rulesAsFunctionArray(rules2))
                 .toEqual(
                     expect.objectContaining({
                         username: expect.arrayContaining(
@@ -100,10 +100,10 @@ describe('public methods', () => {
         })
 
         test('invalid', () => {
-            expect(() => rulesAsArray('nonExistentRule'))
+            expect(() => rulesAsFunctionArray('nonExistentRule'))
                 .toThrowError('First parameter must be a rules object: of field to rules string')
 
-            expect(() => rulesAsArray({}, {}, null))
+            expect(() => rulesAsFunctionArray({}, {}, null))
                 .toThrowError('Third parameter must be a data object of field to value')
         })
     })
