@@ -13,7 +13,7 @@ const parameters = [
 const isValid = validate(...parameters)
 ```
 
-### Parameters<a id='validate-parameters'></a>
+### Parameters
 
 - `<any> value` (required): The value to be validated
 
@@ -38,7 +38,7 @@ const isValid = validate(...parameters)
 
   > Required in rules like `present`.
 
-### Return value<a id='validate-return-value'></a>
+### Return value
 
 `<string|false>`
 
@@ -63,7 +63,7 @@ const isValid = validateData(...parameters)
 // Signature: validateData(<object> data, <object> rules[, <object|false> messages])
 ```
 
-### Parameters<a id='validatedata-parameters'></a>
+### Parameters
 
 - `<object> data` (required): The data containing all field values to validate
 
@@ -96,7 +96,7 @@ const isValid = validateData(...parameters)
 
   > `false`; All failed validations would return false
 
-### Return value<a id='validatedata-return-value'></a>
+### Return value
 
 `<object>`
 
@@ -128,7 +128,7 @@ See [usage examples](./guide.md#validate-a-data-object)
   const functionArray = asFunctionArray(...parameters)
   ```
 
-### Parameters<a id='asfunctionarray-parameters'></a>
+### Parameters
 
 - `<string|array> rules` (required): The rules to turn into functions
 
@@ -156,7 +156,7 @@ See [usage examples](./guide.md#validate-a-data-object)
 
   > Required in rules like `present`.
 
-### Return value<a id='asfunctionarray-return-value'></a>
+### Return value
 > An array of functions where each is the return value of [asFunction](#asfunction).
 
 See [usage examples](./guide.md#convert-string-rules-to-array)
@@ -179,7 +179,7 @@ See [usage examples](./guide.md#convert-string-rules-to-array)
   const ruleFunc = asFunction(...parameters)
   ```
 
-### Parameters<a id='asfunction-parameters'></a>
+### Parameters
 
 - `<string> ruleGroup` (required): The rule and its parameters
 
@@ -203,7 +203,7 @@ See [usage examples](./guide.md#convert-string-rules-to-array)
   }
   ```
 
-### Return value<a id='asfunction-return-value'></a>
+### Return value
 
 `<function>`
 
@@ -223,7 +223,7 @@ See [usage examples](./guide.md#convert-string-rule-group-to-function)
   const rules = rulesAsFunctionArray(...parameters)
   ```
 
-### Parameters<a id='rulesasfunctionarray-parameters'></a>
+### Parameters
 
 - `<object> rules` (required): The object of field to rules
 
@@ -289,7 +289,7 @@ const allowedOptions = (value, options) => {
 customRule('allowed_options', allowedOptions)
 ```
 
-### Parameters<a id='customrule-parameters'></a>
+### Parameters
 
 - `<string> name` (required): The name of the rule as it should be used for valdiations
 
