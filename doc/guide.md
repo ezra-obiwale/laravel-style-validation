@@ -1,0 +1,187 @@
+# Usage guide
+
+## Validate a single value
+
+See [signature](./api.md#validate).
+
+```javascript
+import { validate } from '@ezraobiwale/laravel-style-validation'
+
+const username = 'ezra-obiwale'
+
+validate(username, 'required|alpha_num') // TRUE
+validate(username, ['required', 'alpha']) // "Value must only contain alphabets"
+validate(username, 'required|alpha', false) // FALSE
+
+const messages = {
+  required: 'Please provide a username',
+  alpha: 'Username can only be alphabets',
+}
+validate(username, 'required|alpha', messages) // "Username can only be alphabets"
+
+const year = 2022
+validate(year, ['required', 'numeric', 'between:2000,2050']) // TRUE
+
+// With other data
+validate(year, 'required|numeric|between:2000,2050|different:nextYear', null, { nextYear: 2023 }) // true
+
+// For rules that require checking the field and not the value, provide the field as the last parameter
+validate(year, 'present', false, { nextYear: 2023 }, 'year') // FALSE
+```
+
+## Validate a data object
+
+See [signature](./api.md#validatedata).
+
+```javascript
+import { validateData } from '@ezraobiwale/laravel-style-validation'
+
+const data = {
+  username: 'ezra-obiwale',
+  year: 2022,
+  nextYear: 2023,
+}
+
+const rules = {
+  username: 'required|alpha',
+  year: ['required', 'numeric', 'between:2000,2050', 'different:nextYear'],
+}
+
+validateData(data, rules)
+
+// {
+//     username: "Value must only contain alphabets",
+//     year: true
+// }
+
+const messages = {
+  username: {
+    required: 'You must provide a username',
+    alpha: 'Username can only be alphabets',
+  },
+  year: {
+    required: 'Year cannot be empty',
+    numeric: 'Year must be a number',
+    between: 'Year must be between 2000, 2050',
+    different: 'Year must not be 2023',
+  },
+}
+
+validateData(data, rules, messages)
+
+// {
+//     username: "Username can only be alphabets",
+//     year: true
+// }
+
+const messages = {
+  username: false, // disable error message for username only
+  year: {
+    required: 'Year cannot be empty',
+    numeric: 'Year must be a number',
+    between: 'Year must be between 2000, 2050',
+    different: 'Year must not be 2023',
+  },
+}
+
+validateData(data, rules, messages)
+
+validateData(data, rules, false) // Disable error messages for all fields
+
+// {
+//     username: false,
+//     year: true
+// }
+```
+
+## Convert string rules to array
+
+See [signature](./api.md#asfunctionarray).
+
+```javascript
+import { asFunctionArray } from '@ezraobiwale/laravel-style-validation'
+
+asFunctionArray('required|numeric|between:2000,2050|different:nextYear')
+asFunctionArray(['required', 'numeric', 'between:2000,2050', 'different:nextYear'])
+// [function, function, function, function]
+```
+
+> Each function is a return value of `asFunction`.
+
+## Convert string rule group to function
+
+See [signature](./api.md#asfunction).
+
+```javascript
+import { asFunction } from '@ezraobiwale/laravel-style-validation'
+
+asFunction('between:2000,2050', { data, field, message }) // function
+```
+
+> The returned function takes only one parameter which is the value to validate.
+
+## Create rules object of functions
+
+See [signature](./api.md#rulesasfunctionarray).
+
+```javascript
+import { rulesAsFunctionArray } from '@ezraobiwale/laravel-style-validation'
+
+rulesAsFunctionArray({
+  username: 'required|alpha',
+  year: 'required|numeric|between:2000,2050|different:nextYear',
+})
+// {
+//    username: [function, function],
+//    year: [function, function, function, function]
+//}
+```
+
+## Create custom rules
+
+See [signature](./api.md#customrule).
+
+```javascript
+import { customRule, validate } from '@ezraobiwale/laravel-style-validation'
+
+// define the rule
+const allowedOptions = (value, { data, field, message, params, rules }) => {
+  const isValid = params.includes(value)
+
+  // valiation passes
+  if (isValid) {
+    return true
+  }
+
+  // validation fails and message is disabled
+  if (message === false) {
+    return false
+  }
+
+  // validation failed and custom message exists
+  if (message) {
+    return message
+  }
+
+  // validation failed: return default message
+  return 'Allowed parameters include ' + params.join(', ')
+}
+
+// Second parameter
+{
+    data, // Object contain all field to values
+    field, // string
+    message, // string (to override default)|null (to use default)|false(to simply return FALSE)
+    params, // array of parameters applied to the rule
+    rules // array of rule names applied to the field
+}
+
+// register the rule
+customRule('allowed_options', allowedOptions)
+
+// override existing custom rule
+customRule('allowed_options', newAllowedOptions, true)
+
+// use with other rules
+validate('yes', 'allowed_options:yes,no,maybe|accepted') // TRUE
+```
