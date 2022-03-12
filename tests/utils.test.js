@@ -1,4 +1,4 @@
-import { arrayToObject, chooseMessage, isEmpty, parseMessage, regexFromString } from "../src/utils"
+import { arrayToObject, chooseMessage, isEmpty, isObject, parseMessage, regexFromString, toStudly } from "../src/utils"
 
 describe('utils', () => {
     test('arrayToObject', () => {
@@ -10,6 +10,7 @@ describe('utils', () => {
 
     test('chooseMessage', () => {
         const defaultMessage = 'This is the default message with $1 and $2'
+        const messageParser = () => defaultMessage
 
         expect(chooseMessage(undefined, defaultMessage, { $1: 'one', $2: 'two' }))
             .toBe('This is the default message with one and two')
@@ -17,6 +18,8 @@ describe('utils', () => {
             .toBe('This is the default message with one and two')
         expect(chooseMessage('Only the custom message with $1 and $2', defaultMessage, { $1: 'one', $2: 'two' }))
             .toBe('Only the custom message with one and two')
+        expect(chooseMessage('Nothing to do', 'Another message', {}, messageParser))
+            .toBe(defaultMessage)
     })
 
     test('isEmpty', () => {
@@ -30,6 +33,34 @@ describe('utils', () => {
             .toBe(false)
         expect(isEmpty(false))
             .toBe(false)
+    })
+
+    test('isObject', () => {
+        expect(isObject(''))
+            .toBe(false)
+        expect(isObject(undefined))
+            .toBe(false)
+        expect(isObject(null))
+            .toBe(false)
+        expect(isObject(0))
+            .toBe(false)
+        expect(isObject(false))
+            .toBe(false)
+        expect(isObject([]))
+            .toBe(false)
+        expect(isObject({}))
+            .toBe(true)
+    })
+
+    test('toStudly', () => {
+        expect(toStudly('abcDefGhi'))
+            .toBe('abcDefGhi')
+        expect(toStudly('AbcDefGhi'))
+            .toBe('abcDefGhi')
+        expect(toStudly('abc_def_ghi'))
+            .toBe('abcDefGhi')
+        expect(toStudly('abc-def-ghi'))
+            .toBe('abcDefGhi')
     })
 
     test('regexFromString', () => {

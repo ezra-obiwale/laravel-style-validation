@@ -2,7 +2,7 @@ import required from '../required'
 import { isEmpty } from '../../utils'
 
 const requiredWithAll = (value, options = {}) => {
-    const { data = {}, message = null, params = [] } = options
+    const { data = {}, params = [] } = options
     let isRequired = true
 
     for (let targetField of params) {
@@ -17,7 +17,7 @@ const requiredWithAll = (value, options = {}) => {
         return true
     }
 
-    return required(value, { message })
+    return required(value, options)
 }
 
 export default requiredWithAll

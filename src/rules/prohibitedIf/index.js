@@ -2,7 +2,7 @@ import prohibited from '../prohibited'
 import { arrayToObject } from '../../utils'
 
 const prohibitedIf = (value, options = {}) => {
-    const { data = {}, field = null, message = null, params = [] } = options
+    const { data = {}, params = [] } = options
     const paramsObject = arrayToObject(params)
 
     let prohibitable = true
@@ -19,7 +19,7 @@ const prohibitedIf = (value, options = {}) => {
         return true
     }
 
-    return prohibited(value, { data, field, message })
+    return prohibited(value, options)
 }
 
 export default prohibitedIf

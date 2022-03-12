@@ -2,7 +2,7 @@ import { startsWith as defaultMessage } from '../../messages'
 import { chooseMessage } from '../../utils'
 
 const startsWith = (value, options = {}) => {
-    const { message = null, params = [] } = options
+    const { message = null, messageParser, params = [] } = options
     let isValid = false
 
     for (let option of params) {
@@ -21,7 +21,7 @@ const startsWith = (value, options = {}) => {
         return true
     }
 
-    return chooseMessage(message, defaultMessage, { $values: params.join(', ') })
+    return chooseMessage(message, defaultMessage, { $values: params.join(', ') }, messageParser)
 }
 
 export default startsWith

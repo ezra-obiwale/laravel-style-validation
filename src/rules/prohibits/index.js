@@ -2,7 +2,7 @@ import { prohibits as defaultMessage } from '../../messages'
 import { chooseMessage, isEmpty } from '../../utils'
 
 const prohibits = (value, options = {}) => {
-    const { data = {}, message = null, params = [] } = options
+    const { data = {}, message = null, messageParser, params = [] } = options
     const prohibitable = !isEmpty(value)
 
     if (!prohibitable) {
@@ -24,7 +24,7 @@ const prohibits = (value, options = {}) => {
         return true
     }
 
-    return chooseMessage(message, defaultMessage, { $otherfield: targetField })
+    return chooseMessage(message, defaultMessage, { $otherfield: targetField }, messageParser)
 }
 
 export default prohibits

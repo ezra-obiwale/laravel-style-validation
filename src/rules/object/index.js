@@ -2,7 +2,7 @@ import { object as objectMessage, objectWithKeys as objectWithKeysMessage } from
 import { chooseMessage, isObject } from '../../utils'
 
 const object = (value, options = {}) => {
-    const { message = null, params = [] } = options
+    const { message = null, messageParser, params = [] } = options
     let isValid = true
     let defaultMessage = objectMessage
     let replacements = {}
@@ -26,7 +26,7 @@ const object = (value, options = {}) => {
         return true
     }
 
-    return chooseMessage(message, defaultMessage, replacements)
+    return chooseMessage(message, defaultMessage, replacements, messageParser)
 }
 
 export default object

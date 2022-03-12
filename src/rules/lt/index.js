@@ -2,7 +2,7 @@ import { lt as defaultMessage } from '../../messages'
 import { chooseMessage } from '../../utils'
 
 const lt = (value, options = {}) => {
-    const { data = {}, message = null, params = [] } = options
+    const { data = {}, message = null, messageParser, params = [] } = options
     const otherfield = params[0]
     const otherfieldValue = data[otherfield]
 
@@ -12,7 +12,7 @@ const lt = (value, options = {}) => {
         return true
     }
 
-    return chooseMessage(message, defaultMessage, { $otherfieldValue: otherfieldValue })
+    return chooseMessage(message, defaultMessage, { $otherfieldValue: otherfieldValue }, messageParser)
 }
 
 export default lt

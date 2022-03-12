@@ -1,5 +1,5 @@
-import { asFunctionArray, asFunction, customRule, rulesAsFunctionArray, validate, validateData } from "../src"
-import { alphaDash as alphaDashMessage, numeric as numericMessage, same as sameMessage } from "../src/messages"
+import { asFunctionArray, asFunction, customRule, rulesAsFunctionArray, validate, validateData, setMessageParser, resetMessageParser } from "../src"
+import { alphaDash as alphaDashMessage, numeric as numericMessage, same as sameMessage, required as requiredMessage } from "../src/messages"
 import { chooseMessage, parseMessage } from "../src/utils"
 
 describe('public methods', () => {
@@ -106,6 +106,25 @@ describe('public methods', () => {
             expect(() => rulesAsFunctionArray({}, {}, null))
                 .toThrowError('Third parameter must be a data object of field to value')
         })
+    })
+
+    describe('setMessageParser', () => {
+        const messageParser = jest.fn()
+
+        setMessageParser(messageParser)
+
+        validate(null, 'required')
+
+        expect(messageParser.mock.calls.length)
+            .toBe(1)
+    })
+
+    describe('resetMessageParser', () => {
+        setMessageParser(() => { })
+        resetMessageParser()
+
+        expect(validate(null, 'required'))
+            .toBe(requiredMessage)
     })
 
     const data = {

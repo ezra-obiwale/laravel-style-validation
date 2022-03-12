@@ -318,3 +318,70 @@ customRule('allowed_options', allowedOptions)
     ```
 
 See [usage examples](./guide.md#create-custom-rules)
+
+## setMessageParser()
+
+> Overrides the default message parser.
+
+```javascript
+import { setMessageParser } from '@ezraobiwale/laravel-style-valdiation'
+
+const parameters = [
+  // ...
+]
+
+setMessageParser(...parameters)
+```
+
+### Parameters
+
+- `<function> parser` (required)
+
+  ```javascript
+  // function
+
+  (message, params) => parsedMessage
+  ```
+  - `<string> message`: The message to parse
+
+    > `':firsttoken is a good message for :anothertoken'`
+
+  - `<object> params`: Object of token to value where the tokens need to be replaced in the message with the values.
+
+    ```javascript
+    { firsttoken: 'Some value', anothertoken: 'Some other value' }
+    ```
+
+### Return value
+
+`<undefined>`
+
+The function returns nothing
+
+See [usage examples](./guide.md#set-a-custom-message-parser)
+
+## resetMessageParser()
+
+> Resets the message parser to the default parser function.
+
+```javascript
+import { resetMessageParser } from '@ezraobiwale/laravel-style-valdiation'
+
+const parameters = [
+  // ...
+]
+
+resetMessageParser(...parameters)
+```
+
+### Parameters
+
+> The function has no parameters
+
+### Return value
+
+`<undefined>`
+
+The function returns nothing
+
+See [usage examples](./guide.md#reset-to-default-message-parser)

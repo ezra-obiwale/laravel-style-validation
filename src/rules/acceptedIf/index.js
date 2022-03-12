@@ -2,7 +2,7 @@ import accepted from '../accepted'
 import { arrayToObject } from '../../utils'
 
 const acceptedIf = (value, options = {}) => {
-    const { data = {}, message = null, params = [] } = options
+    const { data = {}, params = [] } = options
     const paramsObject = arrayToObject(params)
 
     let acceptable = true
@@ -19,7 +19,7 @@ const acceptedIf = (value, options = {}) => {
         return true
     }
 
-    return accepted(value, { message })
+    return accepted(value, options)
 }
 
 export default acceptedIf

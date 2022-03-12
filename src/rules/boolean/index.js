@@ -2,7 +2,7 @@ import { boolean as defaultMessage } from '../../messages'
 import { chooseMessage } from '../../utils'
 
 const boolean = (value, options = {}) => {
-    const { message } = options
+    const { message, messageParser } = options
     const validValues = [true, false, 1, 0, '1', '0']
     const isValid = validValues.includes(value)
 
@@ -10,7 +10,7 @@ const boolean = (value, options = {}) => {
         return true
     }
 
-    return chooseMessage(message, defaultMessage)
+    return chooseMessage(message, defaultMessage, {}, messageParser)
 }
 
 export default boolean

@@ -185,3 +185,40 @@ customRule('allowed_options', newAllowedOptions, true)
 // use with other rules
 validate('yes', 'allowed_options:yes,no,maybe|accepted') // TRUE
 ```
+
+## Set a custom message parser
+
+See [signature](./api.md#setmessageparser)
+
+```javascript
+import { setMessageParser } from '@ezraobiwale/laravel-style-validation'
+
+const customParser = (message, params) => {
+  let translatedMessage = trans(message)
+
+  for (let tokenName in params) {
+    const tokenValue = params[tokenName]
+    const regex = new RegExp(tokenName, 'g')
+
+    translatedMessage = translatedMessage.replace(regex, tokenValue)
+  }
+
+  return translatedMessage
+}
+
+setMessageParser(customParser)
+
+// validation now uses the custom parser
+```
+
+## Reset to default message parser
+
+See [signature](./api.md#resetmessageparser)
+
+```javascript
+import { resetMessageParser } from '@ezraobiwale/laravel-style-valdiation'
+
+resetMessageParser()
+
+// validation now uses the default parser
+```

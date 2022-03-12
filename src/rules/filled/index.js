@@ -2,7 +2,7 @@ import { filled as defaultMessage } from '../../messages'
 import { chooseMessage } from '../../utils'
 
 const filled = (value, options = {}) => {
-    const { message } = options
+    const { message, messageParser } = options
     const invalidValues = [null, undefined, '']
     const isValid = !invalidValues.includes(value)
 
@@ -10,7 +10,7 @@ const filled = (value, options = {}) => {
         return true
     }
 
-    return chooseMessage(message, defaultMessage)
+    return chooseMessage(message, defaultMessage, {}, messageParser)
 }
 
 export default filled

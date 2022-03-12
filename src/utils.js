@@ -19,7 +19,7 @@ export const arrayToObject = arr => {
     return obj
 }
 
-export const chooseMessage = (customMessage, defaultMessage, replacements = {}) => {
+export const chooseMessage = (customMessage, defaultMessage, replacements = {}, messageParser) => {
     if (customMessage === false) {
         return false
     }
@@ -28,12 +28,24 @@ export const chooseMessage = (customMessage, defaultMessage, replacements = {}) 
         customMessage = defaultMessage
     }
 
+    if (typeof messageParser === 'function') {
+        return messageParser(`${customMessage || defaultMessage}`, replacements)
+    }
+
     return parseMessage(`${customMessage || defaultMessage}`, replacements)
 }
 
 export const isEmpty = val => val === undefined || val === null || val === ''
 
 export const isObject = obj => typeof obj === 'object' && !Array.isArray(obj) && obj !== null
+
+export const parseMessage = (message, replacements = {}) => {
+    for (let param in replacements) {
+        message = message.replace(param, replacements[param])
+    }
+
+    return message
+}
 
 export const regexFromString = (str) => {
     if (!str.startsWith('/')) {
@@ -51,10 +63,4 @@ export const regexFromString = (str) => {
     return new RegExp(newStr, flags)
 }
 
-export const parseMessage = (message, replacements = {}) => {
-    for (let param in replacements) {
-        message = message.replace(param, replacements[param])
-    }
-
-    return message
-}
+export const toStudly = (str) => str.replace(/^[A-Z]+/, chr => chr.toLowerCase()).replace(/(_|-)+[a-z]/gi, chr => chr[1].toUpperCase())

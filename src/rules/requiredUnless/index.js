@@ -2,7 +2,7 @@ import required from '../required'
 import { arrayToObject } from '../../utils'
 
 const requiredUnless = (value, options = {}) => {
-    const { data = {}, message = null, params = [] } = options
+    const { data = {}, params = [] } = options
     const paramsObject = arrayToObject(params)
 
     let isRequired = false
@@ -19,7 +19,7 @@ const requiredUnless = (value, options = {}) => {
         return true
     }
 
-    return required(value, { message })
+    return required(value, options)
 }
 
 export default requiredUnless

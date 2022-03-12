@@ -2,7 +2,7 @@ import declined from '../declined'
 import { arrayToObject } from '../../utils'
 
 const declinedIf = (value, options = {}) => {
-    const { data = {}, message = null, params = [] } = options
+    const { data = {}, params = [] } = options
     const paramsObject = arrayToObject(params)
 
     let declinable = true
@@ -19,7 +19,7 @@ const declinedIf = (value, options = {}) => {
         return true
     }
 
-    return declined(value, { message })
+    return declined(value, options)
 
 }
 

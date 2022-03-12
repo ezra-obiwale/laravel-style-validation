@@ -2,7 +2,7 @@ import { inArray as defaultMessage } from '../../messages'
 import { chooseMessage } from '../../utils'
 
 const inArray = (value, options = {}) => {
-    const { data = {}, message = null, params = [] } = options
+    const { data = {}, message = null, messageParser, params = [] } = options
     const otherfield = params[0]
     const otherfieldValue = data[otherfield]
 
@@ -12,7 +12,7 @@ const inArray = (value, options = {}) => {
         return true
     }
 
-    return chooseMessage(message, defaultMessage, { $values: otherfieldValue.join(', ') })
+    return chooseMessage(message, defaultMessage, { $values: otherfieldValue.join(', ') }, messageParser)
 }
 
 export default inArray

@@ -1,7 +1,8 @@
 import * as availableRules from './rules'
-import { isObject } from './utils'
+import { isObject, toStudly } from './utils'
 
 const customRules = {}
+let messageParser = null
 
 const getAvailableRuleFunction = (name) => {
     const studlyName = toStudly(name)
@@ -33,8 +34,6 @@ const getRuleFunction = (name) => {
     throw new Error(`Validation rule "${name}" does not exist.`)
 }
 
-const toStudly = (str) => str.replace(/(_|-)+[a-z]/gi, chr => chr[1].toUpperCase())
-
 export const asFunctionArray = (rules, messages = {}, data = {}, field = null) => {
     if (typeof rules !== 'string' && !Array.isArray(rules)) {
         throw new Error('First parameter must be a string of rules')
@@ -65,14 +64,14 @@ export const asFunction = (ruleGroup, options = {}) => {
     }
 
     if (options.hasOwnProperty('data') && !isObject(options.data)) {
-        throw new Error('options.data must be an array')
+        throw new Error('options.data must be an object')
     }
 
     const [name, params = ''] = ruleGroup.split(':')
     const ruleFunc = getRuleFunction(name)
     const paramsArray = params.split(',').filter(val => !!val.length)
 
-    return value => ruleFunc(value, { ...options, params: paramsArray })
+    return value => ruleFunc(value, { ...options, messageParser, params: paramsArray })
 }
 
 export const customRule = (name, func, override = false) => {
@@ -107,6 +106,18 @@ export const rulesAsFunctionArray = (rules, messages = {}, data = {}) => {
     }
 
     return arrayRules
+}
+
+export const resetMessageParser = () => {
+    messageParser = null
+}
+
+export const setMessageParser = (func) => {
+    if (typeof func !== 'function') {
+        throw new Error('Parameter must be a function')
+    }
+
+    messageParser = func
 }
 
 export const validate = (value, rules, messages = {}, data = {}, field = null) => {
