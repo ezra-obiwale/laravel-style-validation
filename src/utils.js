@@ -51,6 +51,8 @@ export const regexFromString = (str) => {
     return new RegExp(newStr, flags)
 }
 
+export const toStudly = (str) => str.replace(/(_|-)+[a-z]/gi, chr => chr[1].toUpperCase())
+
 export const parseMessage = (message, replacements = {}) => {
     for (let param in replacements) {
         message = message.replace(param, replacements[param])
