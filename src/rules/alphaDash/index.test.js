@@ -5,16 +5,16 @@ describe('alphaDash', () => {
     const customMessage = 'This is a custom message'
 
     test('valid', () => {
-        expect(alphaDash('abcdABCD'))
+        expect(alphaDash('abcdABCD123'))
             .toBe(true)
-        expect(alphaDash('some-selector'))
+        expect(alphaDash('some-selector_1234'))
             .toBe(true)
-        expect(alphaDash('some_selector'))
+        expect(alphaDash('some_selector-1234'))
             .toBe(true)
     })
 
     test('invalid', () => {
-        expect(alphaDash(123))
+        expect(alphaDash('AD.34'))
             .toBe(defaultMessage)
         expect(alphaDash('This is a sentence', { message: customMessage }))
             .toBe(customMessage)

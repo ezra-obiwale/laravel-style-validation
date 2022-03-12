@@ -3,7 +3,7 @@ import { chooseMessage } from '../../utils'
 
 const alpha = (value, options = {}) => {
     const { message, messageParser } = options
-    const isValid = /^[a-zA-Z]*$/.test(`${value}`)
+    const isValid = /^[a-zA-Z]+$/.test(`${value}`)
 
     if (isValid) {
         return true

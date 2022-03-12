@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1647093356267" clover="3.2.0">
-  <project timestamp="1647093356267" name="All files">
+<coverage generated="1647125966952" clover="3.2.0">
+  <project timestamp="1647125966952" name="All files">
     <metrics statements="568" coveredstatements="567" conditionals="380" coveredconditionals="291" methods="73" coveredmethods="73" elements="1021" coveredelements="931" complexity="0" loc="568" ncloc="568" packages="51" files="53" classes="53"/>
     <package name="src">
       <metrics statements="164" coveredstatements="163" conditionals="97" coveredconditionals="95" methods="24" coveredmethods="24"/>
@@ -219,11 +219,11 @@
       <file name="index.js" path="/app/src/rules/alpha/index.js">
         <metrics statements="6" coveredstatements="6" conditionals="3" coveredconditionals="3" methods="1" coveredmethods="1"/>
         <line num="4" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="5" count="4" type="stmt"/>
-        <line num="6" count="4" type="stmt"/>
-        <line num="8" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="5" count="8" type="stmt"/>
+        <line num="6" count="8" type="stmt"/>
+        <line num="8" count="8" type="cond" truecount="2" falsecount="0"/>
         <line num="9" count="1" type="stmt"/>
-        <line num="12" count="3" type="stmt"/>
+        <line num="12" count="7" type="stmt"/>
       </file>
     </package>
     <package name="src.rules.alphaDash">
@@ -231,11 +231,11 @@
       <file name="index.js" path="/app/src/rules/alphaDash/index.js">
         <metrics statements="6" coveredstatements="6" conditionals="3" coveredconditionals="3" methods="1" coveredmethods="1"/>
         <line num="4" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="5" count="10" type="stmt"/>
-        <line num="6" count="10" type="stmt"/>
-        <line num="8" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="5" count="6" type="stmt"/>
+        <line num="6" count="6" type="stmt"/>
+        <line num="8" count="6" type="cond" truecount="2" falsecount="0"/>
         <line num="9" count="3" type="stmt"/>
-        <line num="12" count="7" type="stmt"/>
+        <line num="12" count="3" type="stmt"/>
       </file>
     </package>
     <package name="src.rules.alphaNum">

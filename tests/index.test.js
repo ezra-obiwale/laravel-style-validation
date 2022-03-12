@@ -1,5 +1,5 @@
 import { asFunctionArray, asFunction, customRule, rulesAsFunctionArray, validate, validateData, setMessageParser, resetMessageParser } from "../src"
-import { alphaDash as alphaDashMessage, numeric as numericMessage, same as sameMessage, required as requiredMessage } from "../src/messages"
+import { alpha as alphaMessage, numeric as numericMessage, same as sameMessage, required as requiredMessage } from "../src/messages"
 import { chooseMessage, parseMessage } from "../src/utils"
 
 describe('public methods', () => {
@@ -56,7 +56,7 @@ describe('public methods', () => {
                 .toThrowError('Second parameter must be a data object of field to value')
 
             expect(() => asFunction('required', { data: null }))
-                .toThrowError('options.data must be an array')
+                .toThrowError('options.data must be an object')
         })
     })
 
@@ -159,13 +159,13 @@ describe('public methods', () => {
     }
 
     const failRules = {
-        username: 'required|string|alpha_dash',
+        username: 'required|string|alpha',
         password: 'required|numeric',
         terms: 'required|same:password'
     }
     const failMessages = {
         username: {
-            alpha_dash: 'Username can only contain alpha_dash characters'
+            alpha: 'Username can only contain alphabet characters'
         },
         password: {
             numeric: 'Password must only be numbers'
@@ -189,7 +189,7 @@ describe('public methods', () => {
 
         test('invalid', () => {
             expect(validate(data.username, failRules.username, {}, data, 'username'))
-                .toBe(alphaDashMessage)
+                .toBe(alphaMessage)
             expect(validate(data.password, failRules.password, 'This is just wrong', data, 'password'))
                 .toBe('This is just wrong')
             expect(validate(data.terms, failRules.terms, false, data, 'terms'))
@@ -225,7 +225,7 @@ describe('public methods', () => {
             expect(validateData(data, failRules))
                 .toEqual(
                     expect.objectContaining({
-                        username: alphaDashMessage,
+                        username: alphaMessage,
                         password: numericMessage,
                         terms: parseMessage(sameMessage, { $otherfieldValue: data.password })
                     })
@@ -233,7 +233,7 @@ describe('public methods', () => {
             expect(validateData(data, failRules))
                 .toEqual(
                     expect.objectContaining({
-                        username: alphaDashMessage,
+                        username: alphaMessage,
                         password: numericMessage,
                         terms: parseMessage(sameMessage, { $otherfieldValue: data.password })
                     })
@@ -241,7 +241,7 @@ describe('public methods', () => {
             expect(validateData(data, failRules, { ...failMessages, password: false }))
                 .toEqual(
                     expect.objectContaining({
-                        username: failMessages.username.alpha_dash,
+                        username: failMessages.username.alpha,
                         password: false,
                         terms: failMessages.terms.same
                     })
