@@ -130,17 +130,22 @@ describe('public methods', () => {
     const data = {
         username: 'janedoe123',
         password: '@random',
+        ids: [1, 2, 3, 4],
         terms: true,
         policy: false
     }
     const rules1 = {
         username: 'required|string|alpha_num',
         password: 'required|string',
+        ids: 'required|array',
+        'ids.*': 'required|numeric',
         terms: 'required|boolean'
     }
     const rules2 = {
         username: ['required', 'string', 'alpha_num'],
         password: ['required', 'string'],
+        ids: 'required|array',
+        'ids.*': 'required|numeric',
         terms: ['required', 'boolean']
     }
     const messages = {
@@ -161,6 +166,7 @@ describe('public methods', () => {
     const failRules = {
         username: 'required|string|alpha',
         password: 'required|numeric',
+        'ids.*': 'required|alpha',
         terms: 'required|same:password'
     }
     const failMessages = {
@@ -208,6 +214,8 @@ describe('public methods', () => {
                     expect.objectContaining({
                         username: true,
                         password: true,
+                        ids: true,
+                        'ids.*': true,
                         terms: true
                     })
                 )
@@ -216,6 +224,8 @@ describe('public methods', () => {
                     expect.objectContaining({
                         username: true,
                         password: true,
+                        ids: true,
+                        'ids.*': true,
                         terms: true
                     })
                 )
@@ -271,7 +281,7 @@ describe('public methods', () => {
             .toBe(defaultMessage)
         expect(validate('trial', 'required|just_testing', 'My message'))
             .toBe('My message')
-        expect(validate('trial', 'required|just_testing', false ))
+        expect(validate('trial', 'required|just_testing', false))
             .toBe(false)
 
         expect(() => customRule('just_testing'))

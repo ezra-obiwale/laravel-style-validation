@@ -35,6 +35,98 @@ export const chooseMessage = (customMessage, defaultMessage, replacements = {}, 
     return parseMessage(`${customMessage || defaultMessage}`, replacements)
 }
 
+export const eachInPath = (obj, path, callback = () => { }) => {
+    const eachObj = (eObj, ePath, startIndex = 0) => {
+        let index = ePath.indexOf('.*', startIndex)
+        let arrPath = ePath.substr(startIndex, index++ - startIndex)
+        let remPath = ePath.substr(++index)
+
+        if (remPath.startsWith('.')) {
+            remPath = remPath.substr(1)
+        }
+
+        if (arrPath.startsWith('.')) {
+            arrPath = arrPath.substr(1)
+        }
+
+        const arr = getObjectPathValue(eObj, arrPath)
+
+        if (!Array.isArray(arr)) {
+            throw new Error(`${arrPath} is not an array`)
+        }
+
+        const eachArr = (arr, nextPath, curPath) => {
+            while (arr.length) {
+                const value = arr.shift()
+
+                if (nextPath.startsWith('*')) { // value must be an array
+                    if (Array.isArray(value)) {
+                        let nPath = nextPath.substr(1)
+                        let cPath = `${curPath}.`
+                        index++
+
+                        if (nextPath.startsWith('*.')) {
+                            nPath = nextPath.substr(2)
+                            cPath = `${cPath}*`
+                            index++
+                        }
+
+                        eachArr(value, nPath, cPath)
+                    } else {
+                        throw new Error(`${curPath} must be an array`)
+                    }
+                } else if (nextPath.includes('.') || !isEmpty(nextPath)) { // value must be an object
+                    if (isObject(value)) {
+                        nextPath = nextPath.startsWith('.') ? nextPath.substr(1) : nextPath
+
+                        if (nextPath.includes('*')) {
+                            eachObj(value, ePath, index)
+                        } else {
+                            if (false === callback(getObjectPathValue(value, nextPath))) {
+                                break;
+                            }
+                        }
+                    } else {
+                        throw new Error(`${curPath} must be an object`)
+                    }
+                } else { // no next path. Use current value directly
+                    if (false === callback(value)) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        eachArr(arr, remPath, `${arrPath}.*`)
+    }
+
+    eachObj({ ...obj }, path)
+}
+
+export const getObjectPathValue = (obj, path) => {
+    const paths = path.split('.')
+    let value = { ...obj }
+    let valuePath = ''
+
+    while (paths.length) {
+        const nextPath = paths.shift()
+
+        if (typeof value !== 'object' || value === null) {
+            throw new Error(`${valuePath} is not an object or array`)
+        }
+
+        if (valuePath) {
+            valuePath += '.'
+        }
+
+        valuePath += nextPath
+
+        value = value[nextPath]
+    }
+
+    return value
+}
+
 export const isEmpty = val => val === undefined || val === null || val === ''
 
 export const isObject = obj => typeof obj === 'object' && !Array.isArray(obj) && obj !== null

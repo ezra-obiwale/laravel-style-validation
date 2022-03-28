@@ -1,4 +1,4 @@
-import { arrayToObject, chooseMessage, isEmpty, isObject, parseMessage, regexFromString, toStudly } from "../src/utils"
+import { arrayToObject, chooseMessage, eachInPath, getObjectPathValue, isEmpty, isObject, parseMessage, regexFromString, toStudly } from "../src/utils"
 
 describe('utils', () => {
     test('arrayToObject', () => {
@@ -20,6 +20,50 @@ describe('utils', () => {
             .toBe('Only the custom message with one and two')
         expect(chooseMessage('Nothing to do', 'Another message', {}, messageParser))
             .toBe(defaultMessage)
+    })
+
+    test('eachInPath', () => {
+        const func = jest.fn()
+
+        const data = {
+            arr1: [
+                {
+                    key1: {
+                        arr2: [3, 5, 11]
+                    }
+                },
+                {
+                    key1: {
+                        arr2: [5, 3, 6, 9]
+                    }
+                }
+            ]
+        }
+
+        eachInPath(data, 'arr1.*.key1.arr2.*', func)
+
+        expect(func.mock.calls.length)
+            .toBe(7)
+
+    })
+
+    test('getObjectPathValue', () => {
+        expect(getObjectPathValue({ one: { two: { three: 3 } } }, 'one.two.three'))
+            .toBe(3)
+
+        const arrObj = { one: [{ two: [{ three: 3 }] }] }
+
+        expect(getObjectPathValue(arrObj, 'one.0.two.0.three'))
+            .toBe(3)
+
+        expect(() => getObjectPathValue(arrObj, 'one.0.three.0.three'))
+            .toThrowError('one.0.three is not an object or array')
+
+        expect(() => getObjectPathValue(arrObj, 'one.1.three.0.three'))
+            .toThrowError('one.1 is not an object or array')
+
+        expect(() => getObjectPathValue(arrObj, 'one.1.three.0.three'))
+            .toThrowError('one.1 is not an object or array')
     })
 
     test('isEmpty', () => {
