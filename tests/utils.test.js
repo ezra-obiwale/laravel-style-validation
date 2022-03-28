@@ -23,9 +23,7 @@ describe('utils', () => {
     })
 
     test('eachInPath', () => {
-        const func = jest.fn()
-
-        const data = {
+        const data1 = {
             arr1: [
                 {
                     key1: {
@@ -40,16 +38,80 @@ describe('utils', () => {
             ]
         }
 
-        eachInPath(data, 'arr1.*.key1.arr2.*', func)
+        const generator = eachInPath(data1, 'arr1.*.key1.arr2.*')
 
-        expect(func.mock.calls.length)
-            .toBe(7)
+        expect(generator.next().value).toBe(3)
+        expect(generator.next().value).toBe(5)
+        expect(generator.next().value).toBe(11)
+        expect(generator.next().value).toBe(5)
+        expect(generator.next().value).toBe(3)
+        expect(generator.next().value).toBe(6)
+        expect(generator.next().value).toBe(9)
+        expect(generator.next().value).toBe(undefined)
+        // expect(() => eachInPath(data1, 'arr1.*.*.key1.arr2.*').next())
+        //     .toThrowError('arr1.* must be an array')
 
+        // expect(() => eachInPath(data1, 'arr2.*.*.key1.arr2.*'))
+        //     .toThrowError('arr2 is not an array')
+
+        const data2 = {
+            arr1: [
+                [
+                    {
+                        key1: {
+                            arr2: [3, 5, 11]
+                        }
+                    },
+                    {
+                        key1: {
+                            arr2: [5, 3, 6, 9]
+                        }
+                    }
+                ],
+                [
+                    {
+                        key1: {
+                            arr2: [1, 5, 3, 32]
+                        }
+                    },
+                    {
+                        key1: {
+                            arr2: [9, 3, 7, 2, 1]
+                        }
+                    }
+                ]
+            ]
+        }
+
+        const generator2 = eachInPath(data2, 'arr1.*.*.key1.arr2.*')
+
+        expect(generator2.next().value).toBe(3)
+        expect(generator2.next().value).toBe(5)
+        expect(generator2.next().value).toBe(11)
+        expect(generator2.next().value).toBe(5)
+        expect(generator2.next().value).toBe(3)
+        expect(generator2.next().value).toBe(6)
+        expect(generator2.next().value).toBe(9)
+        expect(generator2.next().value).toBe(1)
+        expect(generator2.next().value).toBe(5)
+        expect(generator2.next().value).toBe(3)
+        expect(generator2.next().value).toBe(32)
+        expect(generator2.next().value).toBe(9)
+        expect(generator2.next().value).toBe(3)
+        expect(generator2.next().value).toBe(7)
+        expect(generator2.next().value).toBe(2)
+        expect(generator2.next().value).toBe(1)
+        expect(generator2.next().value).toBe(undefined)
     })
 
     test('getObjectPathValue', () => {
-        expect(getObjectPathValue({ one: { two: { three: 3 } } }, 'one.two.three'))
+        const obj = { one: { two: { three: 3 } }, four: 4 }
+
+        expect(getObjectPathValue(obj, 'one.two.three'))
             .toBe(3)
+
+        expect(getObjectPathValue(obj, 'four'))
+            .toBe(4)
 
         const arrObj = { one: [{ two: [{ three: 3 }] }] }
 

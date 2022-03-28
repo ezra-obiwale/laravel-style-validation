@@ -1,3 +1,5 @@
+import '@babel/polyfill'
+
 export const arrayToObject = arr => {
     const obj = {}
 
@@ -35,8 +37,10 @@ export const chooseMessage = (customMessage, defaultMessage, replacements = {}, 
     return parseMessage(`${customMessage || defaultMessage}`, replacements)
 }
 
-export const eachInPath = (obj, path, callback = () => { }) => {
-    const eachObj = (eObj, ePath, startIndex = 0) => {
+export const clone = obj => JSON.parse(JSON.stringify(obj))
+
+export const eachInPath = function* (obj, path) {
+    const eachObj = function* (eObj, ePath, startIndex = 0) {
         let index = ePath.indexOf('.*', startIndex)
         let arrPath = ePath.substr(startIndex, index++ - startIndex)
         let remPath = ePath.substr(++index)
@@ -55,7 +59,7 @@ export const eachInPath = (obj, path, callback = () => { }) => {
             throw new Error(`${arrPath} is not an array`)
         }
 
-        const eachArr = (arr, nextPath, curPath) => {
+        const eachArr = function* (arr, nextPath, curPath, lastIndex) {
             while (arr.length) {
                 const value = arr.shift()
 
@@ -63,15 +67,17 @@ export const eachInPath = (obj, path, callback = () => { }) => {
                     if (Array.isArray(value)) {
                         let nPath = nextPath.substr(1)
                         let cPath = `${curPath}.`
-                        index++
+                        let lIndex = lastIndex + 1
 
                         if (nextPath.startsWith('*.')) {
                             nPath = nextPath.substr(2)
                             cPath = `${cPath}*`
-                            index++
+                            lIndex++
                         }
 
-                        eachArr(value, nPath, cPath)
+                        for (let value of eachArr(value, nPath, cPath, lIndex)) {
+                            yield value
+                        }
                     } else {
                         throw new Error(`${curPath} must be an array`)
                     }
@@ -80,32 +86,34 @@ export const eachInPath = (obj, path, callback = () => { }) => {
                         nextPath = nextPath.startsWith('.') ? nextPath.substr(1) : nextPath
 
                         if (nextPath.includes('*')) {
-                            eachObj(value, ePath, index)
-                        } else {
-                            if (false === callback(getObjectPathValue(value, nextPath))) {
-                                break;
+                            for (let value of eachObj(value, ePath, lastIndex)) {
+                                yield value
                             }
+                        } else {
+                            yield getObjectPathValue(value, nextPath);
                         }
                     } else {
                         throw new Error(`${curPath} must be an object`)
                     }
                 } else { // no next path. Use current value directly
-                    if (false === callback(value)) {
-                        break;
-                    }
+                    yield value;
                 }
             }
         }
 
-        eachArr(arr, remPath, `${arrPath}.*`)
+        for (let value of eachArr(arr, remPath, `${arrPath}.*`, index)) {
+            yield value
+        }
     }
 
-    eachObj({ ...obj }, path)
+    for (let value of eachObj(clone(obj), path)) {
+        yield value
+    }
 }
 
 export const getObjectPathValue = (obj, path) => {
     const paths = path.split('.')
-    let value = { ...obj }
+    let value = clone(obj)
     let valuePath = ''
 
     while (paths.length) {

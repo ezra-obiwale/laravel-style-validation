@@ -1,6 +1,6 @@
 {
   "name": "@ezraobiwale/laravel-style-validation",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Validations, the Laravel way",
   "main": "dist/index.js",
   "repository": "https://github.com/ezra-obiwale/laravel-style-validation",
@@ -9,6 +9,7 @@
   "devDependencies": {
     "@babel/cli": "^7.17.6",
     "@babel/core": "^7.17.5",
+    "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.16.11",
     "babel-preset-minify": "^0.5.1",
     "jest": "^27.5.1",

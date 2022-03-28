@@ -117,6 +117,9 @@ describe('public methods', () => {
 
         expect(messageParser.mock.calls.length)
             .toBe(1)
+
+        expect(() => setMessageParser(null))
+            .toThrowError('Parameter must be a function')
     })
 
     describe('resetMessageParser', () => {
@@ -144,8 +147,8 @@ describe('public methods', () => {
     const rules2 = {
         username: ['required', 'string', 'alpha_num'],
         password: ['required', 'string'],
-        ids: 'required|array',
-        'ids.*': 'required|numeric',
+        ids: ['required', 'array'],
+        'ids.*': ['required', 'numeric'],
         terms: ['required', 'boolean']
     }
     const messages = {

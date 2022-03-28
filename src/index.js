@@ -1,5 +1,5 @@
 import * as availableRules from './rules'
-import { isObject, toStudly } from './utils'
+import { eachInPath, getObjectPathValue, isObject, toStudly } from './utils'
 
 const customRules = {}
 let messageParser = null
@@ -152,12 +152,8 @@ export const validateData = (data, rules, messages = {}) => {
 
     const result = {}
 
-    for (let field in data) {
-        let fieldRules = rules[field]
-
-        if (!fieldRules) {
-            continue
-        }
+    for (const field in rules) {
+        const fieldRules = rules[field]
 
         let fieldMessages = {}
 
@@ -167,7 +163,21 @@ export const validateData = (data, rules, messages = {}) => {
             fieldMessages = messages[field]
         }
 
-        result[field] = validate(data[field], fieldRules, fieldMessages, data, field)
+        if (field.includes('.*')) {
+            for (const value of eachInPath(data, field)) {
+                result[field] = validate(value, fieldRules, fieldMessages, data, field)
+
+                if (true !== result[field]) {
+                    break
+                }
+            }
+
+            continue;
+        }
+
+        const value = getObjectPathValue(data, field)
+
+        result[field] = validate(value, fieldRules, fieldMessages, data, field)
     }
 
     return result

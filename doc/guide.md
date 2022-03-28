@@ -40,11 +40,14 @@ const data = {
   username: 'ezra-obiwale',
   year: 2022,
   nextYear: 2023,
+  ids: [1, 3, 5],
 }
 
 const rules = {
   username: 'required|alpha',
   year: ['required', 'numeric', 'between:2000,2050', 'different:nextYear'],
+  ids: ['required', 'array'],
+  'ids.*': ['required', 'numeric'],
 }
 
 validateData(data, rules)
@@ -65,13 +68,19 @@ const messages = {
     between: 'Year must be between 2000, 2050',
     different: 'Year must not be 2023',
   },
+  'ids.*': {
+    required: 'ids must be provided',
+    numeric: 'ids must be numbers',
+  }
 }
 
 validateData(data, rules, messages)
 
 // {
 //     username: "Username can only be alphabets",
-//     year: true
+//     year: true,
+//     ids: true,
+//     'ids.*': true,
 // }
 
 const messages = {
@@ -90,7 +99,9 @@ validateData(data, rules, false) // Disable error messages for all fields
 
 // {
 //     username: false,
-//     year: true
+//     year: true,
+//     ids: true,
+//     'ids.*': true,
 // }
 ```
 
