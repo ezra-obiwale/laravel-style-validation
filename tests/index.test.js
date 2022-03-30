@@ -194,6 +194,10 @@ describe('public methods', () => {
                 .toBe(true)
             expect(validate(data.password, rules2.password, { ...messages.username, required: false }, data, 'password'))
                 .toBe(true)
+            expect(validate(data.password, 'sometimes|string'))
+                .toBe(true)
+            expect(validate(undefined, 'sometimes|string'))
+                .toBe(true)
         })
 
         test('invalid', () => {
@@ -210,7 +214,7 @@ describe('public methods', () => {
         })
     })
 
-    describe('validationData', () => {
+    describe('validateData', () => {
         test('valid', () => {
             expect(validateData(data, rules1))
                 .toEqual(
@@ -230,6 +234,20 @@ describe('public methods', () => {
                         ids: true,
                         'ids.*': true,
                         terms: true
+                    })
+                )
+
+            expect(validateData(
+                { testing: true },
+                {
+                    testing: 'sometimes|boolean',
+                    debugging: 'sometimes|boolean'
+                }
+            ))
+                .toEqual(
+                    expect.objectContaining({
+                        testing: true,
+                        debugging: true
                     })
                 )
         })

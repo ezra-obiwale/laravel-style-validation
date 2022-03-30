@@ -1,5 +1,6 @@
 import * as availableRules from './rules'
 import { eachInPath, getObjectPathValue, isObject, toStudly } from './utils'
+import { InvalidStopError, ValidStopError } from './errors'
 
 const customRules = {}
 let messageParser = null
@@ -133,9 +134,21 @@ export const validate = (value, rules, messages = {}, data = {}, field = null) =
     let valid = true
 
     while (valid && disposableFieldRules.length) {
-        const currentRule = disposableFieldRules.shift()
+        try {
+            const currentRule = disposableFieldRules.shift()
 
-        valid = currentRule(value)
+            valid = currentRule(value)
+        } catch (e) {
+            if (e instanceof ValidStopError) {
+                valid = true
+                break
+            } else if (e instanceof InvalidStopError) {
+                valid = false
+                break
+            }
+
+            throw e
+        }
     }
 
     return valid

@@ -29,7 +29,7 @@
 | `max:value`                              | Value must be less than or equal to [value]                              |
 | `min:value`                              | Value must be more than or equal to [value]                              |
 | `not_in:foo,bar,...`                     | Value must not be one of [foo, bar, ...]                                 |
-| `not_regex:pattern`                      | Value doesn't match the expected pattern                                                         |
+| `not_regex:pattern`                      | Value doesn't match the expected pattern                                 |
 | `nullable`                               | -                                                                        |
 | `numeric`                                | Value must be a number                                                   |
 | `object[:foo,bar,...]`                   | Value must be an object [with keys [foo, bar, ...]]                      |
@@ -38,7 +38,7 @@
 | `prohibited_if:otherfield,value,...`     | [field] is not allowed                                                   |
 | `prohibited_unless:otherfield,value,...` | [field] is not allowed                                                   |
 | `prohibits:otherfield,...`               | [otherfield] is not allowed                                              |
-| `regex:pattern`                          | Value doesn't match the expected pattern                                                         |
+| `regex:pattern`                          | Value doesn't match the expected pattern                                 |
 | `required`                               | Value is required                                                        |
 | `required_if:anotherfield,value,...`     | Value is required                                                        |
 | `required_unless:anotherfield,value,...` | Value is required                                                        |
@@ -47,9 +47,10 @@
 | `required_without:anotherfield,...`      | Value is required                                                        |
 | `required_without_all:anotherfield,...`  | Value is required                                                        |
 | `same:otherfield`                        | Value must be [otherfieldValue]                                          |
+| `sometimes`                              | -                                                                        |
 | `starts_with:foo,bar,...`                | Value must starts with any of [foo, bar, ...]                            |
 | `string`                                 | Value must be a string                                                   |
-| `type_of:<type>`                         | Value must be a $type                                                 |
+| `type_of:<type>`                         | Value must be a $type                                                    |
 | `url`                                    | Value must be a valid url                                                |
 | `uuid`                                   | Value must a valid uuid                                                  |
 
