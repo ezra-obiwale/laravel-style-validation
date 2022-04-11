@@ -35,7 +35,7 @@ const getRuleFunction = (name) => {
     throw new Error(`Validation rule "${name}" does not exist.`)
 }
 
-export const asFunctionArray = (rules, messages = {}, data = {}, field = null) => {
+const asFunctionArray = (rules, messages = {}, data = {}, field = null) => {
     if (typeof rules !== 'string' && !Array.isArray(rules)) {
         throw new Error('First parameter must be a string of rules')
     }
@@ -55,7 +55,7 @@ export const asFunctionArray = (rules, messages = {}, data = {}, field = null) =
     })
 }
 
-export const asFunction = (ruleGroup, options = {}) => {
+const asFunction = (ruleGroup, options = {}) => {
     if (typeof ruleGroup !== 'string') {
         throw new Error('First parameter must be a string with pattern rule:comma,separated,options')
     }
@@ -89,24 +89,6 @@ export const customRule = (name, func, override = false) => {
     }
 
     customRules[name] = func
-}
-
-export const rulesAsFunctionArray = (rules, messages = {}, data = {}) => {
-    if (!isObject(rules)) {
-        throw new Error('First parameter must be a rules object: of field to rules string')
-    }
-
-    if (!isObject(data)) {
-        throw new Error('Third parameter must be a data object of field to value')
-    }
-
-    const arrayRules = {}
-
-    for (let field in rules) {
-        arrayRules[field] = asFunctionArray(rules[field], (messages && messages[field]) || {}, data, field)
-    }
-
-    return arrayRules
 }
 
 export const resetMessageParser = () => {

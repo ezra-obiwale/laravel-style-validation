@@ -105,48 +105,6 @@ validateData(data, rules, false) // Disable error messages for all fields
 // }
 ```
 
-## Convert string rules to array
-
-See [signature](./api.md#asfunctionarray).
-
-```javascript
-import { asFunctionArray } from '@ezraobiwale/laravel-style-validation'
-
-asFunctionArray('required|numeric|between:2000,2050|different:nextYear')
-asFunctionArray(['required', 'numeric', 'between:2000,2050', 'different:nextYear'])
-// [function, function, function, function]
-```
-
-> Each function is a return value of `asFunction`.
-
-## Convert string rule group to function
-
-See [signature](./api.md#asfunction).
-
-```javascript
-import { asFunction } from '@ezraobiwale/laravel-style-validation'
-
-asFunction('between:2000,2050', { data, field, message }) // function
-```
-
-> The returned function takes only one parameter which is the value to validate.
-
-## Create rules object of functions
-
-See [signature](./api.md#rulesasfunctionarray).
-
-```javascript
-import { rulesAsFunctionArray } from '@ezraobiwale/laravel-style-validation'
-
-rulesAsFunctionArray({
-  username: 'required|alpha',
-  year: 'required|numeric|between:2000,2050|different:nextYear',
-})
-// {
-//    username: [function, function],
-//    year: [function, function, function, function]
-//}
-```
 
 ## Create custom rules
 

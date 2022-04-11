@@ -3,111 +3,6 @@ import { alpha as alphaMessage, numeric as numericMessage, same as sameMessage, 
 import { chooseMessage, parseMessage } from "../src/utils"
 
 describe('public methods', () => {
-    describe('asFunctionArray', () => {
-        test('valid', () => {
-            const stringRules = 'required|string|same:confirm_password'
-            const arrayRules = ['required', 'string', 'same:confirm_password']
-
-            expect(asFunctionArray(stringRules))
-                .toHaveLength(3)
-            expect(asFunctionArray(stringRules))
-                .toEqual(
-                    expect.arrayContaining(
-                        [expect.any(Function), expect.any(Function), expect.any(Function)]
-                    )
-                )
-
-            expect(asFunctionArray(arrayRules))
-                .toHaveLength(3)
-            expect(asFunctionArray(arrayRules))
-                .toEqual(
-                    expect.arrayContaining(
-                        [expect.any(Function), expect.any(Function), expect.any(Function)]
-                    )
-                )
-        })
-
-        test('invalid', () => {
-            expect(() => asFunctionArray('nonExistentRule'))
-                .toThrowError('Validation rule "nonExistentRule" does not exist.')
-
-            expect(() => asFunctionArray({}))
-                .toThrowError('First parameter must be a string of rules')
-
-            expect(() => asFunctionArray('required', false, null))
-                .toThrowError('Third parameter must be a data object of field to value')
-        })
-    })
-
-    describe('asFunction', () => {
-        test('valid', () => {
-            expect(asFunction('between:13,31'))
-                .toEqual(expect.any(Function))
-        })
-
-        test('invalid', () => {
-            expect(() => asFunction('nonExistentRule'))
-                .toThrowError('Validation rule "nonExistentRule" does not exist.')
-
-            expect(() => asFunction({}))
-                .toThrowError('First parameter must be a string with pattern rule:comma,separated,options')
-
-            expect(() => asFunction('required', null))
-                .toThrowError('Second parameter must be a data object of field to value')
-
-            expect(() => asFunction('required', { data: null }))
-                .toThrowError('options.data must be an object')
-        })
-    })
-
-    describe('rulesArray', () => {
-        test('valid', () => {
-            const rules1 = {
-                username: 'required|string|alpha_num',
-                password: 'required|string'
-            }
-            const rules2 = {
-                username: ['required', 'string', 'alpha_num'],
-                password: ['required', 'string']
-            }
-
-            expect(rulesAsFunctionArray(rules1))
-                .toEqual(
-                    expect.objectContaining({
-                        username: expect.arrayContaining(
-                            [expect.any(Function), expect.any(Function), expect.any(Function)]
-                        ),
-                        password: expect.arrayContaining(
-                            [expect.any(Function), expect.any(Function)]
-                        )
-                    })
-
-                )
-
-            expect(rulesAsFunctionArray(rules2))
-                .toEqual(
-                    expect.objectContaining({
-                        username: expect.arrayContaining(
-                            [expect.any(Function), expect.any(Function), expect.any(Function)]
-                        ),
-                        password: expect.arrayContaining(
-                            [expect.any(Function), expect.any(Function)]
-                        )
-                    })
-
-                )
-
-        })
-
-        test('invalid', () => {
-            expect(() => rulesAsFunctionArray('nonExistentRule'))
-                .toThrowError('First parameter must be a rules object: of field to rules string')
-
-            expect(() => rulesAsFunctionArray({}, {}, null))
-                .toThrowError('Third parameter must be a data object of field to value')
-        })
-    })
-
     describe('setMessageParser', () => {
         const messageParser = jest.fn()
 
@@ -241,7 +136,7 @@ describe('public methods', () => {
                 { testing: true },
                 {
                     testing: 'sometimes|boolean',
-                    debugging: 'sometimes|boolean'
+                    debugging: 'sometimes|boolean',
                 }
             ))
                 .toEqual(
