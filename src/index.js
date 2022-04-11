@@ -120,6 +120,10 @@ export const validate = (value, rules, messages = {}, data = {}, field = null) =
             const currentRule = disposableFieldRules.shift()
 
             valid = currentRule(value)
+
+            if (!valid) {
+                break;
+            }
         } catch (e) {
             if (e instanceof ValidStopError) {
                 valid = true
