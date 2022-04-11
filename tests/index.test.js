@@ -1,4 +1,4 @@
-import { asFunctionArray, asFunction, customRule, rulesAsFunctionArray, validate, validateData, setMessageParser, resetMessageParser } from "../src"
+import { customRule, validate, validateData, setMessageParser, resetMessageParser } from "../src"
 import { alpha as alphaMessage, numeric as numericMessage, same as sameMessage, required as requiredMessage } from "../src/messages"
 import { chooseMessage, parseMessage } from "../src/utils"
 
@@ -28,6 +28,7 @@ describe('public methods', () => {
     const data = {
         username: 'janedoe123',
         password: '@random',
+        firstName: '',
         ids: [1, 2, 3, 4],
         terms: true,
         policy: false
@@ -35,6 +36,7 @@ describe('public methods', () => {
     const rules1 = {
         username: 'required|string|alpha_num',
         password: 'required|string',
+        firstName: 'required|string',
         ids: 'required|array',
         'ids.*': 'required|numeric',
         terms: 'required|boolean'
@@ -42,6 +44,7 @@ describe('public methods', () => {
     const rules2 = {
         username: ['required', 'string', 'alpha_num'],
         password: ['required', 'string'],
+        firstName: ['required', 'string'],
         ids: ['required', 'array'],
         'ids.*': ['required', 'numeric'],
         terms: ['required', 'boolean']
@@ -64,6 +67,7 @@ describe('public methods', () => {
     const failRules = {
         username: 'required|string|alpha',
         password: 'required|numeric',
+        firstName: 'required|same:password',
         'ids.*': 'required|alpha',
         terms: 'required|same:password'
     }
@@ -96,6 +100,8 @@ describe('public methods', () => {
         })
 
         test('invalid', () => {
+            expect(validate(data.firstName, rules1.firstName))
+                .toBe(requiredMessage)
             expect(validate(data.username, failRules.username, {}, data, 'username'))
                 .toBe(alphaMessage)
             expect(validate(data.password, failRules.password, 'This is just wrong', data, 'password'))

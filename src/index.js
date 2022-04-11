@@ -115,15 +115,11 @@ export const validate = (value, rules, messages = {}, data = {}, field = null) =
     const disposableFieldRules = asFunctionArray(rules, messages, data, field)
     let valid = true
 
-    while (valid && disposableFieldRules.length) {
+    while (valid === true && disposableFieldRules.length) {
         try {
             const currentRule = disposableFieldRules.shift()
 
             valid = currentRule(value)
-
-            if (!valid) {
-                break;
-            }
         } catch (e) {
             if (e instanceof ValidStopError) {
                 valid = true
