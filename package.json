@@ -1,6 +1,6 @@
 {
   "name": "@ezraobiwale/laravel-style-validation",
-  "version": "3.0.2",
+  "version": "3.1.0",
   "description": "Validations, the Laravel way",
   "main": "dist/index.js",
   "repository": "https://github.com/ezra-obiwale/laravel-style-validation",
