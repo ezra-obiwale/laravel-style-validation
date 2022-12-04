@@ -3,10 +3,14 @@ import { chooseMessage } from '../../utils'
 
 const filled = (value, options = {}) => {
     const { message, messageParser } = options
-    const invalidValues = [null, undefined, '']
-    const isValid = !invalidValues.includes(value)
 
-    if (isValid) {
+    const invalidValues = [null, undefined, '']
+
+    if (Array.isArray(value) && !!value.length) {
+        return true
+    }
+
+    if (!Array.isArray(value) && !invalidValues.includes(value)) {
         return true
     }
 

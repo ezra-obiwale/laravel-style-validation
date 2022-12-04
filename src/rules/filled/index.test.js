@@ -15,6 +15,8 @@ describe('filled', () => {
             .toBe(true)
         expect(filled(false))
             .toBe(true)
+        expect(filled([1, 2, 3]))
+            .toBe(true)
     })
 
     test('invalid', () => {
@@ -24,5 +26,7 @@ describe('filled', () => {
             .toBe(customMessage)
         expect(filled(undefined, { message: false }))
             .toBe(false)
+        expect(filled([]))
+            .toBe(defaultMessage)
     })
 })

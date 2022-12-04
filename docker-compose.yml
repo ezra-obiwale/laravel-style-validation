@@ -8,6 +8,5 @@ services:
       target: base
     volumes:
       - ".:/app"
-    user: 1000:1000
     tty: true
     stdin_open: true

@@ -10,6 +10,8 @@ describe('min', () => {
             .toBe(true)
         expect(min(23, { params: [23] }))
             .toBe(true)
+        expect(min([1, 2, 3], { params: [2] }))
+            .toBe(true)
     })
 
     test('invalid', () => {
@@ -18,6 +20,8 @@ describe('min', () => {
         expect(min(22.99, { message: customMessage, params: [23] }))
             .toBe(customMessage)
         expect(min(22.99, { message: false, params: [23] }))
+            .toBe(false)
+        expect(min([1, 2, 3], { message: false, params: [5] }))
             .toBe(false)
     })
 })

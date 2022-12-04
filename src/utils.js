@@ -135,7 +135,12 @@ export const getObjectPathValue = (obj, path) => {
     return value
 }
 
-export const isEmpty = val => val === undefined || val === null || val === ''
+export const isEmpty = val => {
+    const arrayIsEmpty = Array.isArray(val) && !val.length
+    const objectIsEmpty = isObject(val) && !Object.keys(val).length
+
+    return arrayIsEmpty || objectIsEmpty || val === undefined || val === null || val === ''
+}
 
 export const isObject = obj => typeof obj === 'object' && !Array.isArray(obj) && obj !== null
 

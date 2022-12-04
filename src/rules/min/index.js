@@ -5,7 +5,7 @@ const min = (value, options = {}) => {
     const { message = null, messageParser, params = [] } = options
     const maxValue = parseFloat(params[0])
 
-    const isValid = value >= maxValue
+    const isValid = (Array.isArray(value) ? value.length : value) >= maxValue
 
     if (isValid) {
         return true

@@ -10,6 +10,10 @@ describe('max', () => {
             .toBe(true)
         expect(max(23, { params: [23] }))
             .toBe(true)
+        expect(max([1, 2, 3], { params: [3] }))
+            .toBe(true)
+        expect(max([1, 2, 3], { params: [5] }))
+            .toBe(true)
     })
 
     test('invalid', () => {
@@ -18,6 +22,8 @@ describe('max', () => {
         expect(max(23, { message: customMessage, params: [22.99] }))
             .toBe(customMessage)
         expect(max(23, { message: false, params: [22.99] }))
+            .toBe(false)
+        expect(max([1, 2, 3], { message: false, params: [2] }))
             .toBe(false)
     })
 })
