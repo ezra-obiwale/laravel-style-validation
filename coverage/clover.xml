@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1670112643811" clover="3.2.0">
-  <project timestamp="1670112643811" name="All files">
-    <metrics statements="634" coveredstatements="620" conditionals="424" coveredconditionals="316" methods="78" coveredmethods="78" elements="1136" coveredelements="1014" complexity="0" loc="634" ncloc="634" packages="52" files="55" classes="55"/>
+<coverage generated="1679955137313" clover="3.2.0">
+  <project timestamp="1679955137313" name="All files">
+    <metrics statements="630" coveredstatements="616" conditionals="416" coveredconditionals="308" methods="78" coveredmethods="78" elements="1124" coveredelements="1002" complexity="0" loc="630" ncloc="630" packages="52" files="55" classes="55"/>
     <package name="src">
       <metrics statements="225" coveredstatements="211" conditionals="129" coveredconditionals="108" methods="28" coveredmethods="28"/>
       <file name="errors.js" path="/app/src/errors.js">
@@ -222,10 +222,10 @@
         <line num="132" count="59" type="stmt"/>
         <line num="135" count="40" type="stmt"/>
         <line num="138" count="51" type="stmt"/>
-        <line num="139" count="192" type="cond" truecount="2" falsecount="0"/>
-        <line num="140" count="192" type="cond" truecount="1" falsecount="1"/>
-        <line num="142" count="192" type="cond" truecount="5" falsecount="0"/>
-        <line num="145" count="652" type="cond" truecount="3" falsecount="0"/>
+        <line num="139" count="202" type="cond" truecount="2" falsecount="0"/>
+        <line num="140" count="202" type="cond" truecount="1" falsecount="1"/>
+        <line num="142" count="202" type="cond" truecount="5" falsecount="0"/>
+        <line num="145" count="662" type="cond" truecount="3" falsecount="0"/>
         <line num="147" count="51" type="cond" truecount="0" falsecount="1"/>
         <line num="148" count="148" type="stmt"/>
         <line num="149" count="86" type="stmt"/>
@@ -399,24 +399,23 @@
       </file>
     </package>
     <package name="src.rules.digits">
-      <metrics statements="9" coveredstatements="9" conditionals="8" coveredconditionals="6" methods="1" coveredmethods="1"/>
+      <metrics statements="8" coveredstatements="8" conditionals="7" coveredconditionals="5" methods="1" coveredmethods="1"/>
       <file name="index.js" path="/app/src/rules/digits/index.js">
-        <metrics statements="9" coveredstatements="9" conditionals="8" coveredconditionals="6" methods="1" coveredmethods="1"/>
+        <metrics statements="8" coveredstatements="8" conditionals="7" coveredconditionals="5" methods="1" coveredmethods="1"/>
         <line num="4" count="2" type="cond" truecount="0" falsecount="1"/>
         <line num="5" count="7" type="cond" truecount="1" falsecount="1"/>
         <line num="6" count="7" type="stmt"/>
         <line num="7" count="7" type="stmt"/>
-        <line num="8" count="7" type="stmt"/>
-        <line num="10" count="7" type="cond" truecount="3" falsecount="0"/>
-        <line num="13" count="7" type="cond" truecount="2" falsecount="0"/>
-        <line num="14" count="4" type="stmt"/>
-        <line num="17" count="3" type="stmt"/>
+        <line num="9" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="12" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="16" count="3" type="stmt"/>
       </file>
     </package>
     <package name="src.rules.digitsBetween">
-      <metrics statements="12" coveredstatements="12" conditionals="9" coveredconditionals="7" methods="1" coveredmethods="1"/>
+      <metrics statements="11" coveredstatements="11" conditionals="8" coveredconditionals="6" methods="1" coveredmethods="1"/>
       <file name="index.js" path="/app/src/rules/digitsBetween/index.js">
-        <metrics statements="12" coveredstatements="12" conditionals="9" coveredconditionals="7" methods="1" coveredmethods="1"/>
+        <metrics statements="11" coveredstatements="11" conditionals="8" coveredconditionals="6" methods="1" coveredmethods="1"/>
         <line num="4" count="2" type="cond" truecount="0" falsecount="1"/>
         <line num="5" count="7" type="cond" truecount="1" falsecount="1"/>
         <line num="6" count="7" type="stmt"/>
@@ -424,11 +423,10 @@
         <line num="8" count="7" type="stmt"/>
         <line num="9" count="7" type="stmt"/>
         <line num="10" count="7" type="stmt"/>
-        <line num="11" count="7" type="stmt"/>
-        <line num="13" count="7" type="cond" truecount="4" falsecount="0"/>
-        <line num="16" count="7" type="cond" truecount="2" falsecount="0"/>
-        <line num="17" count="4" type="stmt"/>
-        <line num="20" count="3" type="stmt"/>
+        <line num="12" count="7" type="cond" truecount="3" falsecount="0"/>
+        <line num="14" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="15" count="4" type="stmt"/>
+        <line num="18" count="3" type="stmt"/>
       </file>
     </package>
     <package name="src.rules.email">
@@ -463,17 +461,15 @@
       </file>
     </package>
     <package name="src.rules.filled">
-      <metrics statements="8" coveredstatements="8" conditionals="9" coveredconditionals="9" methods="1" coveredmethods="1"/>
+      <metrics statements="6" coveredstatements="6" conditionals="3" coveredconditionals="3" methods="1" coveredmethods="1"/>
       <file name="index.js" path="/app/src/rules/filled/index.js">
-        <metrics statements="8" coveredstatements="8" conditionals="9" coveredconditionals="9" methods="1" coveredmethods="1"/>
+        <metrics statements="6" coveredstatements="6" conditionals="3" coveredconditionals="3" methods="1" coveredmethods="1"/>
         <line num="4" count="2" type="cond" truecount="1" falsecount="0"/>
         <line num="5" count="10" type="stmt"/>
-        <line num="7" count="10" type="stmt"/>
-        <line num="9" count="10" type="cond" truecount="4" falsecount="0"/>
-        <line num="10" count="1" type="stmt"/>
-        <line num="13" count="9" type="cond" truecount="4" falsecount="0"/>
-        <line num="14" count="5" type="stmt"/>
-        <line num="17" count="4" type="stmt"/>
+        <line num="6" count="10" type="stmt"/>
+        <line num="8" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="9" count="6" type="stmt"/>
+        <line num="12" count="4" type="stmt"/>
       </file>
     </package>
     <package name="src.rules.gt">
@@ -535,10 +531,10 @@
       <file name="index.js" path="/app/src/rules/integer/index.js">
         <metrics statements="6" coveredstatements="6" conditionals="3" coveredconditionals="3" methods="1" coveredmethods="1"/>
         <line num="4" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="5" count="4" type="stmt"/>
-        <line num="6" count="4" type="stmt"/>
-        <line num="8" count="4" type="cond" truecount="2" falsecount="0"/>
-        <line num="9" count="1" type="stmt"/>
+        <line num="5" count="5" type="stmt"/>
+        <line num="6" count="5" type="stmt"/>
+        <line num="8" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="9" count="2" type="stmt"/>
         <line num="12" count="3" type="stmt"/>
       </file>
     </package>

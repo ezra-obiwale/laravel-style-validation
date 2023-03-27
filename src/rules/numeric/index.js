@@ -1,15 +1,15 @@
-import { numeric as defaultMessage } from '../../messages'
-import { chooseMessage } from '../../utils'
+import { numeric as defaultMessage } from '../../messages';
+import { chooseMessage } from '../../utils';
 
 const numeric = (value, options = {}) => {
-    const { message, messageParser } = options
-    const isValid = !isNaN(value)
+    const { message, messageParser } = options;
+    const isValid = !isNaN(value);
 
     if (isValid) {
-        return true
+        return true;
     }
 
-    return chooseMessage(message, defaultMessage, {}, messageParser)
-}
+    return chooseMessage(message, defaultMessage, {}, messageParser);
+};
 
-export default numeric
+export default numeric;

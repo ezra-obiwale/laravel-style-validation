@@ -1,13 +1,13 @@
-import nullable from '.'
+import nullable from '.';
 
 describe('nullable', () => {
-    const data = {}
+    const data = {};
 
     test('valid', () => {
         expect(nullable('', { data, field: 'test' }))
-            .toBe(true)
+            .toBe(true);
         expect(data.test)
-            .toBe(null)
-        expect(nullable('present', { data, field: 'test' }))
-    })
-})
+            .toBe(null);
+        expect(nullable('present', { data, field: 'test' }));
+    });
+});

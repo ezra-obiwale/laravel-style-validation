@@ -1,27 +1,27 @@
-import digits from '.'
-import { digits as defaultMessage } from '../../messages'
-import { parseMessage } from '../../utils'
+import digits from '.';
+import { digits as defaultMessage } from '../../messages';
+import { parseMessage } from '../../utils';
 
-const customMessage = 'This is a custom message'
+const customMessage = 'This is a custom message';
 
 describe('digits', () => {
     test('valid', () => {
         expect(digits(123, { params: [3] }))
-            .toBe(true)
+            .toBe(true);
         expect(digits(123.456, { params: [7] }))
-            .toBe(true)
+            .toBe(true);
         expect(digits('123', { params: [3] }))
-            .toBe(true)
+            .toBe(true);
         expect(digits('123.456', { params: [7] }))
-            .toBe(true)
-    })
+            .toBe(true);
+    });
 
     test('invalid', () => {
         expect(digits('abc', { params: [3] }))
-            .toBe(parseMessage(defaultMessage, { $value: 3 }))
+            .toBe(parseMessage(defaultMessage, { $value: 3 }));
         expect(digits(1234, { message: customMessage, params: [3] }))
-            .toBe(customMessage)
+            .toBe(customMessage);
         expect(digits(true, { message: false, params: [3] }))
-            .toBe(false)
-    })
-})
+            .toBe(false);
+    });
+});

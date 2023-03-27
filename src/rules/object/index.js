@@ -1,32 +1,32 @@
-import { object as objectMessage, objectWithKeys as objectWithKeysMessage } from '../../messages'
-import { chooseMessage, isObject } from '../../utils'
+import { object as objectMessage, objectWithKeys as objectWithKeysMessage } from '../../messages';
+import { chooseMessage, isObject } from '../../utils';
 
 const object = (value, options = {}) => {
-    const { message = null, messageParser, params = [] } = options
-    let isValid = true
-    let defaultMessage = objectMessage
-    let replacements = {}
+    const { message = null, messageParser, params = [] } = options;
+    let isValid = true;
+    let defaultMessage = objectMessage;
+    let replacements = {};
 
     if (!isObject(value)) {
-        isValid = false
+        isValid = false;
     } else {
         for (let key of params) {
             if (!value.hasOwnProperty(key)) {
-                isValid = false
+                isValid = false;
 
-                break
+                break;
             }
         }
 
-        defaultMessage = objectWithKeysMessage
-        replacements = { $keys: params.join(', ') }
+        defaultMessage = objectWithKeysMessage;
+        replacements = { $keys: params.join(', ') };
     }
 
     if (isValid) {
-        return true
+        return true;
     }
 
-    return chooseMessage(message, defaultMessage, replacements, messageParser)
-}
+    return chooseMessage(message, defaultMessage, replacements, messageParser);
+};
 
-export default object
+export default object;

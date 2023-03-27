@@ -4,11 +4,11 @@ module.exports = api => {
         ignore: [
             "**/*.test.js"
         ]
-    }
+    };
 
     if (api.env('test')) {
-        delete config.ignore
+        delete config.ignore;
     }
 
-    return config
-}
+    return config;
+};

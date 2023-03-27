@@ -1,26 +1,26 @@
-import declined from '../declined'
-import { arrayToObject } from '../../utils'
+import declined from '../declined';
+import { arrayToObject } from '../../utils';
 
 const declinedIf = (value, options = {}) => {
-    const { data = {}, params = [] } = options
-    const paramsObject = arrayToObject(params)
+    const { data = {}, params = [] } = options;
+    const paramsObject = arrayToObject(params);
 
-    let declinable = true
+    let declinable = true;
 
     for (let targetField in paramsObject) {
-        declinable = JSON.stringify(paramsObject[targetField]) === JSON.stringify(data[targetField])
+        declinable = JSON.stringify(paramsObject[targetField]) === JSON.stringify(data[targetField]);
 
         if (!declinable) {
-            break
+            break;
         }
     }
 
     if (!declinable) {
-        return true
+        return true;
     }
 
-    return declined(value, options)
+    return declined(value, options);
 
-}
+};
 
-export default declinedIf
+export default declinedIf;

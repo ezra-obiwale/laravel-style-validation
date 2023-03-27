@@ -1,15 +1,15 @@
-import { required as defaultMessage } from '../../messages'
-import { chooseMessage, isEmpty } from '../../utils'
+import { required as defaultMessage } from '../../messages';
+import { chooseMessage, isEmpty } from '../../utils';
 
 const required = (value, options = {}) => {
-    const { message, messageParser } = options
-    const isValid = !isEmpty(value)
+    const { message, messageParser } = options;
+    const isValid = !isEmpty(value);
 
     if (isValid) {
-        return true
+        return true;
     }
 
-    return chooseMessage(message, defaultMessage, {}, messageParser)
-}
+    return chooseMessage(message, defaultMessage, {}, messageParser);
+};
 
-export default required
+export default required;

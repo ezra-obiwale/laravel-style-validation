@@ -1,30 +1,30 @@
-import declined from '.'
-import { declined as defaultMessage } from '../../messages'
+import declined from '.';
+import { declined as defaultMessage } from '../../messages';
 
 describe('declined', () => {
-    const customMessage = 'This is a custom message'
+    const customMessage = 'This is a custom message';
 
     test('valid', () => {
         expect(declined('no'))
-            .toBe(true)
+            .toBe(true);
         expect(declined('off'))
-            .toBe(true)
+            .toBe(true);
         expect(declined(0))
-            .toBe(true)
+            .toBe(true);
         expect(declined(false))
-            .toBe(true)
-    })
+            .toBe(true);
+    });
 
     test('invalid', () => {
         expect(declined(''))
-            .toBe(defaultMessage)
+            .toBe(defaultMessage);
         expect(declined(true))
-            .toBe(defaultMessage)
+            .toBe(defaultMessage);
         expect(declined(12))
-            .toBe(defaultMessage)
+            .toBe(defaultMessage);
         expect(declined('12', { message: customMessage }))
-            .toBe(customMessage)
+            .toBe(customMessage);
         expect(declined('This is a sentence', { message: false }))
-            .toBe(false)
-    })
-})
+            .toBe(false);
+    });
+});

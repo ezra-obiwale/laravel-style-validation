@@ -1,23 +1,23 @@
-import required from '../required'
-import { isEmpty } from '../../utils'
+import required from '../required';
+import { isEmpty } from '../../utils';
 
 const requiredWithoutAll = (value, options = {}) => {
-    const { data = {}, params = [] } = options
-    let isRequired = false
+    const { data = {}, params = [] } = options;
+    let isRequired = false;
 
     for (let targetField of params) {
-        isRequired = isEmpty(data[targetField])
+        isRequired = isEmpty(data[targetField]);
 
         if (!isRequired) {
-            break
+            break;
         }
     }
 
     if (!isRequired) {
-        return true
+        return true;
     }
 
-    return required(value, options)
-}
+    return required(value, options);
+};
 
-export default requiredWithoutAll
+export default requiredWithoutAll;

@@ -1,22 +1,22 @@
-import object from '.'
-import { object as defaultMessage } from '../../messages'
+import object from '.';
+import { object as defaultMessage } from '../../messages';
 
 describe('object', () => {
-    const customMessage = 'This is a custom message'
+    const customMessage = 'This is a custom message';
 
     test('valid', () => {
         expect(object({ one: 1, two: 2 }))
-            .toBe(true)
+            .toBe(true);
         expect(object({ one: 1, two: 2, test: true }, { params: ['one', 'test'] }))
-            .toBe(true)
-    })
+            .toBe(true);
+    });
 
     test('invalid', () => {
         expect(object(1234))
-            .toBe(defaultMessage)
+            .toBe(defaultMessage);
         expect(object({ one: 1, two: 2 }, { message: customMessage, params: ['test'] }))
-            .toBe(customMessage)
+            .toBe(customMessage);
         expect(object({ one: 1, two: 2 }, { message: false, params: ['test'] }))
-            .toBe(false)
-    })
-})
+            .toBe(false);
+    });
+});

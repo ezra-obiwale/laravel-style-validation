@@ -371,13 +371,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">51x</span>
-<span class="cline-any cline-yes">192x</span>
-<span class="cline-any cline-yes">192x</span>
+<span class="cline-any cline-yes">202x</span>
+<span class="cline-any cline-yes">202x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">192x</span>
+<span class="cline-any cline-yes">202x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">652x</span>
+<span class="cline-any cline-yes">662x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">51x</span>
 <span class="cline-any cline-yes">148x</span>
@@ -403,184 +403,184 @@
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">118x</span></td><td class="text"><pre class="prettyprint lang-js">import '@babel/polyfill'
+<span class="cline-any cline-yes">118x</span></td><td class="text"><pre class="prettyprint lang-js">import '@babel/polyfill';
 &nbsp;
 export const arrayToObject = arr =&gt; {
-    const obj = {}
+    const obj = {};
 &nbsp;
     if (!Array.isArray(arr)) {
-        return obj
+        return obj;
     }
 &nbsp;
-    let key = null
+    let key = null;
 &nbsp;
     arr.forEach(value =&gt; {
         if (!key) {
-            key = value
+            key = value;
         } else {
-            obj[key] = value
-            key = null
+            obj[key] = value;
+            key = null;
         }
-    })
+    });
 &nbsp;
-    return obj
-}
+    return obj;
+};
 &nbsp;
 export const chooseMessage = (customMessage, defaultMessage, replacements = {}, messageParser) =&gt; {
     if (customMessage === false) {
-        return false
+        return false;
     }
 &nbsp;
     if (customMessage === true) {
-        customMessage = defaultMessage
+        customMessage = defaultMessage;
     }
 &nbsp;
     if (typeof messageParser === 'function') {
-        return messageParser(`${customMessage || defaultMessage}`, replacements)
+        return messageParser(`${ customMessage || defaultMessage }`, replacements);
     }
 &nbsp;
-    return parseMessage(`${customMessage || defaultMessage}`, replacements)
-}
+    return parseMessage(`${ customMessage || defaultMessage }`, replacements);
+};
 &nbsp;
-export const clone = obj =&gt; JSON.parse(JSON.stringify(obj))
+export const clone = obj =&gt; JSON.parse(JSON.stringify(obj));
 &nbsp;
 export const eachInPath = function* (obj, path) {
     const eachObj = function* (eObj, ePath, startIndex = 0) {
-        let index = ePath.indexOf('.*', startIndex)
-        let arrPath = ePath.substr(startIndex, index++ - startIndex)
-        let remPath = ePath.substr(++index)
+        let index = ePath.indexOf('.*', startIndex);
+        let arrPath = ePath.substr(startIndex, index++ - startIndex);
+        let remPath = ePath.substr(++index);
 &nbsp;
         if (remPath.startsWith('.')) {
-            remPath = remPath.substr(1)
+            remPath = remPath.substr(1);
         }
 &nbsp;
         if (arrPath.startsWith('.')) {
-            arrPath = arrPath.substr(1)
+            arrPath = arrPath.substr(1);
         }
 &nbsp;
-        const arr = getObjectPathValue(eObj, arrPath)
+        const arr = getObjectPathValue(eObj, arrPath);
 &nbsp;
         <span class="missing-if-branch" title="if path not taken" >I</span>if (!Array.isArray(arr)) {
-<span class="cstat-no" title="statement not covered" >            throw new Error(`${arrPath} is not an array`)</span>
+<span class="cstat-no" title="statement not covered" >            throw new Error(`${ arrPath } is not an array`);</span>
         }
 &nbsp;
         const eachArr = function* (arr, nextPath, curPath, lastIndex) {
             while (arr.length) {
-                const value = arr.shift()
+                const value = arr.shift();
 &nbsp;
                 if (nextPath.startsWith('*')) { // value must be an array
                     if (Array.isArray(value)) {
-                        let nPath = nextPath.substr(1)
-                        let cPath = `${curPath}.`
-                        let lIndex = lastIndex + 1
+                        let nPath = nextPath.substr(1);
+                        let cPath = `${ curPath }.`;
+                        let lIndex = lastIndex + 1;
 &nbsp;
                         <span class="missing-if-branch" title="else path not taken" >E</span>if (nextPath.startsWith('*.')) {
-                            nPath = nextPath.substr(2)
-                            cPath = `${cPath}*`
-                            lIndex++
+                            nPath = nextPath.substr(2);
+                            cPath = `${ cPath }*`;
+                            lIndex++;
                         }
 &nbsp;
                         for (let value of eachArr(value, nPath, cPath, lIndex)) {
-                            yield value
+                            yield value;
                         }
                     } else <span class="missing-if-branch" title="else path not taken" >E</span>{
-<span class="cstat-no" title="statement not covered" >                        throw new Error(`${curPath} must be an array`)</span>
+<span class="cstat-no" title="statement not covered" >                        throw new Error(`${ curPath } must be an array`);</span>
                     }
                 } else if (nextPath.includes('.') || !isEmpty(nextPath)) { // value must be an object
                     if (isObject(value)) {
-                        nextPath = nextPath.startsWith('.') ? <span class="branch-0 cbranch-no" title="branch not covered" >nextPath.substr(1) </span>: nextPath
+                        nextPath = nextPath.startsWith('.') ? <span class="branch-0 cbranch-no" title="branch not covered" >nextPath.substr(1) </span>: nextPath;
 &nbsp;
                         if (nextPath.includes('*')) {
                             for (let value of eachObj(value, ePath, lastIndex)) {
-                                yield value
+                                yield value;
                             }
                         } else <span class="missing-if-branch" title="else path not taken" >E</span>{
 <span class="cstat-no" title="statement not covered" >                            yield getObjectPathValue(value, nextPath);</span>
                         }
                     } else <span class="missing-if-branch" title="else path not taken" >E</span>{
-<span class="cstat-no" title="statement not covered" >                        throw new Error(`${curPath} must be an object`)</span>
+<span class="cstat-no" title="statement not covered" >                        throw new Error(`${ curPath } must be an object`);</span>
                     }
                 } else { // no next path. Use current value directly
                     yield value;
                 }
             }
-        }
+        };
 &nbsp;
-        for (let value of eachArr(arr, remPath, `${arrPath}.*`, index)) {
-            yield value
+        for (let value of eachArr(arr, remPath, `${ arrPath }.*`, index)) {
+            yield value;
         }
-    }
+    };
 &nbsp;
     for (let value of eachObj(clone(obj), path)) {
-        yield value
+        yield value;
     }
-}
+};
 &nbsp;
 export const getObjectPathValue = (obj, path) =&gt; {
-    const paths = path.split('.')
-    let value = clone(obj)
-    let valuePath = ''
+    const paths = path.split('.');
+    let value = clone(obj);
+    let valuePath = '';
 &nbsp;
     while (paths.length) {
-        const nextPath = paths.shift()
+        const nextPath = paths.shift();
 &nbsp;
         if (typeof value !== 'object' || value === null) {
-            throw new Error(`${valuePath} is not an object or array`)
+            throw new Error(`${ valuePath } is not an object or array`);
         }
 &nbsp;
         if (valuePath) {
-            valuePath += '.'
+            valuePath += '.';
         }
 &nbsp;
-        valuePath += nextPath
+        valuePath += nextPath;
 &nbsp;
-        value = value[nextPath]
+        value = value[nextPath];
     }
 &nbsp;
-    return value
-}
+    return value;
+};
 &nbsp;
 export const isEmpty = val =&gt; {
-    const arrayIsEmpty = Array.isArray(val) &amp;&amp; !val.length
-    const objectIsEmpty = isObject(val) &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >!Object.keys(val).length</span>
+    const arrayIsEmpty = Array.isArray(val) &amp;&amp; !val.length;
+    const objectIsEmpty = isObject(val) &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >!Object.keys(val).length;</span>
 &nbsp;
-    return arrayIsEmpty || objectIsEmpty || val === undefined || val === null || val === ''
-}
+    return arrayIsEmpty || objectIsEmpty || val === undefined || val === null || val === '';
+};
 &nbsp;
-export const isObject = obj =&gt; typeof obj === 'object' &amp;&amp; !Array.isArray(obj) &amp;&amp; obj !== null
+export const isObject = obj =&gt; typeof obj === 'object' &amp;&amp; !Array.isArray(obj) &amp;&amp; obj !== null;
 &nbsp;
 export const parseMessage = (message, replacements = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> =&gt; {
     for (let param in replacements) {
-        message = message.replace(param, replacements[param])
+        message = message.replace(param, replacements[param]);
     }
 &nbsp;
-    return message
-}
+    return message;
+};
 &nbsp;
 export const regexFromString = (str) =&gt; {
     if (!str.startsWith('/')) {
-        return new RegExp(str)
+        return new RegExp(str);
     }
 &nbsp;
-    const strArr = str.split('')
+    const strArr = str.split('');
 &nbsp;
-    strArr.splice(str.lastIndexOf('/'))
-    strArr.splice(str.indexOf('/'), 1)
+    strArr.splice(str.lastIndexOf('/'));
+    strArr.splice(str.indexOf('/'), 1);
 &nbsp;
-    const newStr = strArr.join('')
-    const flags = str.substr(str.lastIndexOf('/') + 1)
+    const newStr = strArr.join('');
+    const flags = str.substr(str.lastIndexOf('/') + 1);
 &nbsp;
-    return new RegExp(newStr, flags)
-}
+    return new RegExp(newStr, flags);
+};
 &nbsp;
-export const toStudly = (str) =&gt; str.replace(/^[A-Z]+/, chr =&gt; chr.toLowerCase()).replace(/(_|-)+[a-z]/gi, chr =&gt; chr[1].toUpperCase())</pre></td></tr></table></pre>
+export const toStudly = (str) =&gt; str.replace(/^[A-Z]+/, chr =&gt; chr.toLowerCase()).replace(/(_|-)+[a-z]/gi, chr =&gt; chr[1].toUpperCase());</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Sun Dec 04 2022 00:10:43 GMT+0000 (Coordinated Universal Time)
+                at Mon Mar 27 2023 22:12:17 GMT+0000 (Coordinated Universal Time)
             </div>
         <script src="../prettify.js"></script>
         <script>

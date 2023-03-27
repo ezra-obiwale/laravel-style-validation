@@ -1,20 +1,19 @@
-import { digits as defaultMessage } from '../../messages'
-import { chooseMessage } from '../../utils'
+import { digits as defaultMessage } from '../../messages';
+import { chooseMessage } from '../../utils';
 
 const digits = (value, options = {}) => {
-    const { message = null, messageParser, params = [] } = options
-    const floatValue = parseFloat(value)
-    const intValue = parseInt(value)
-    const length = parseInt(params[0])
+    const { message = null, messageParser, params = [] } = options;
+    const numberValue = Number(value);
+    const length = Number(params[0]);
 
-    const isValid = (`${value}` === `${floatValue}` || `${value}` === `${intValue}`) &&
-        `${value}`.length === length
+    const isValid = (`${ value }` === `${ numberValue }`) &&
+        `${ value }`.length === length;
 
     if (isValid) {
-        return true
+        return true;
     }
 
-    return chooseMessage(message, defaultMessage, { $value: params[0] }, messageParser)
-}
+    return chooseMessage(message, defaultMessage, { $value: params[0] }, messageParser);
+};
 
-export default digits
+export default digits;

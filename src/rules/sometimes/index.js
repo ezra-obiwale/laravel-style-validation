@@ -1,12 +1,12 @@
-import { isEmpty } from '../../utils'
-import { ValidStopError } from '../../errors'
+import { isEmpty } from '../../utils';
+import { ValidStopError } from '../../errors';
 
 const sometimes = (value) => {
     if (isEmpty(value)) {
-        throw new ValidStopError()
+        throw new ValidStopError();
     }
 
-    return true
-}
+    return true;
+};
 
-export default sometimes
+export default sometimes;

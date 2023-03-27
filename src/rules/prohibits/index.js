@@ -1,30 +1,30 @@
-import { prohibits as defaultMessage } from '../../messages'
-import { chooseMessage, isEmpty } from '../../utils'
+import { prohibits as defaultMessage } from '../../messages';
+import { chooseMessage, isEmpty } from '../../utils';
 
 const prohibits = (value, options = {}) => {
-    const { data = {}, message = null, messageParser, params = [] } = options
-    const prohibitable = !isEmpty(value)
+    const { data = {}, message = null, messageParser, params = [] } = options;
+    const prohibitable = !isEmpty(value);
 
     if (!prohibitable) {
-        return true
+        return true;
     }
 
-    let isValid = true
-    let targetField
+    let isValid = true;
+    let targetField;
 
     for (targetField of params) {
-        isValid = !data.hasOwnProperty(targetField)
+        isValid = !data.hasOwnProperty(targetField);
 
         if (!isValid) {
-            break
+            break;
         }
     }
 
     if (isValid) {
-        return true
+        return true;
     }
 
-    return chooseMessage(message, defaultMessage, { $otherfield: targetField }, messageParser)
-}
+    return chooseMessage(message, defaultMessage, { $otherfield: targetField }, messageParser);
+};
 
-export default prohibits
+export default prohibits;

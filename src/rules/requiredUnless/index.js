@@ -1,25 +1,25 @@
-import required from '../required'
-import { arrayToObject } from '../../utils'
+import required from '../required';
+import { arrayToObject } from '../../utils';
 
 const requiredUnless = (value, options = {}) => {
-    const { data = {}, params = [] } = options
-    const paramsObject = arrayToObject(params)
+    const { data = {}, params = [] } = options;
+    const paramsObject = arrayToObject(params);
 
-    let isRequired = false
+    let isRequired = false;
 
     for (let targetField in paramsObject) {
-        isRequired = paramsObject[targetField] != data[targetField]
+        isRequired = paramsObject[targetField] != data[targetField];
 
         if (isRequired) {
-            break
+            break;
         }
     }
 
     if (!isRequired) {
-        return true
+        return true;
     }
 
-    return required(value, options)
-}
+    return required(value, options);
+};
 
-export default requiredUnless
+export default requiredUnless;

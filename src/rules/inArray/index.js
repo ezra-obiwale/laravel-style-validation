@@ -1,18 +1,18 @@
-import { inArray as defaultMessage } from '../../messages'
-import { chooseMessage } from '../../utils'
+import { inArray as defaultMessage } from '../../messages';
+import { chooseMessage } from '../../utils';
 
 const inArray = (value, options = {}) => {
-    const { data = {}, message = null, messageParser, params = [] } = options
-    const otherfield = params[0]
-    const otherfieldValue = data[otherfield]
+    const { data = {}, message = null, messageParser, params = [] } = options;
+    const otherfield = params[0];
+    const otherfieldValue = data[otherfield];
 
-    const isValid = Array.isArray(otherfieldValue) && otherfieldValue.includes(value)
+    const isValid = Array.isArray(otherfieldValue) && otherfieldValue.includes(value);
 
     if (isValid) {
-        return true
+        return true;
     }
 
-    return chooseMessage(message, defaultMessage, { $values: otherfieldValue.join(', ') }, messageParser)
-}
+    return chooseMessage(message, defaultMessage, { $values: otherfieldValue.join(', ') }, messageParser);
+};
 
-export default inArray
+export default inArray;

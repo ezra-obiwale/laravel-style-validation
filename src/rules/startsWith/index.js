@@ -1,15 +1,15 @@
-import { startsWith as defaultMessage } from '../../messages'
-import { chooseMessage } from '../../utils'
+import { startsWith as defaultMessage } from '../../messages';
+import { chooseMessage } from '../../utils';
 
 const startsWith = (value, options = {}) => {
-    const { message = null, messageParser, params = [] } = options
-    let isValid = false
+    const { message = null, messageParser, params = [] } = options;
+    let isValid = false;
 
     for (let option of params) {
         if (Array.isArray(value)) {
-            isValid = value[0] === option
+            isValid = value[0] === option;
         } else {
-            isValid = `${value}`.startsWith(option)
+            isValid = `${ value }`.startsWith(option);
         }
 
         if (isValid) {
@@ -18,10 +18,10 @@ const startsWith = (value, options = {}) => {
     }
 
     if (isValid) {
-        return true
+        return true;
     }
 
-    return chooseMessage(message, defaultMessage, { $values: params.join(', ') }, messageParser)
-}
+    return chooseMessage(message, defaultMessage, { $values: params.join(', ') }, messageParser);
+};
 
-export default startsWith
+export default startsWith;

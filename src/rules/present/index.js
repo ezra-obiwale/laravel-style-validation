@@ -1,15 +1,15 @@
-import { present as defaultMessage } from '../../messages'
-import { chooseMessage } from '../../utils'
+import { present as defaultMessage } from '../../messages';
+import { chooseMessage } from '../../utils';
 
 const present = (value, options = {}) => {
-    const { data = {}, field = null, message = null, messageParser } = options
-    const isValid = field && data.hasOwnProperty(field)
+    const { data = {}, field = null, message = null, messageParser } = options;
+    const isValid = field && data.hasOwnProperty(field);
 
     if (isValid) {
-        return true
+        return true;
     }
 
-    return chooseMessage(message, defaultMessage, { $field: field }, messageParser)
-}
+    return chooseMessage(message, defaultMessage, { $field: field }, messageParser);
+};
 
-export default present
+export default present;

@@ -1,20 +1,15 @@
-import { filled as defaultMessage } from '../../messages'
-import { chooseMessage } from '../../utils'
+import { filled as defaultMessage } from '../../messages';
+import { chooseMessage, isEmpty } from '../../utils';
 
 const filled = (value, options = {}) => {
-    const { message, messageParser } = options
+    const { message, messageParser } = options;
+    const isValid = !isEmpty(value);
 
-    const invalidValues = [null, undefined, '']
-
-    if (Array.isArray(value) && !!value.length) {
-        return true
+    if (isValid) {
+        return true;
     }
 
-    if (!Array.isArray(value) && !invalidValues.includes(value)) {
-        return true
-    }
+    return chooseMessage(message, defaultMessage, {}, messageParser);
+};
 
-    return chooseMessage(message, defaultMessage, {}, messageParser)
-}
-
-export default filled
+export default filled;

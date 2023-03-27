@@ -421,185 +421,185 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import * as availableRules from './rules'
-import { eachInPath, getObjectPathValue, isObject, toStudly } from './utils'
-import { InvalidStopError, ValidStopError } from './errors'
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import * as availableRules from './rules';
+import { eachInPath, getObjectPathValue, isObject, toStudly } from './utils';
+import { InvalidStopError, ValidStopError } from './errors';
 &nbsp;
-const customRules = {}
-let messageParser = null
+const customRules = {};
+let messageParser = null;
 &nbsp;
 const getAvailableRuleFunction = (name) =&gt; {
-    const studlyName = toStudly(name)
+    const studlyName = toStudly(name);
 &nbsp;
     if (availableRules.hasOwnProperty(studlyName)) {
-        return availableRules[studlyName]
+        return availableRules[studlyName];
     }
 &nbsp;
-    const otherStudlyName = `$${studlyName}`
+    const otherStudlyName = `$${ studlyName }`;
 &nbsp;
     if (availableRules.hasOwnProperty(otherStudlyName)) {
-        return availableRules[otherStudlyName]
+        return availableRules[otherStudlyName];
     }
 &nbsp;
-    return
-}
+    return;
+};
 &nbsp;
 const getRuleFunction = (name) =&gt; {
-    const availableRuleFn = getAvailableRuleFunction(name)
+    const availableRuleFn = getAvailableRuleFunction(name);
 &nbsp;
     if (availableRuleFn) {
-        return availableRuleFn
+        return availableRuleFn;
     }
 &nbsp;
     <span class="missing-if-branch" title="else path not taken" >E</span>if (customRules.hasOwnProperty(name)) {
-        return customRules[name]
+        return customRules[name];
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    throw new Error(`Validation rule "${name}" does not exist.`)</span>
-}
+<span class="cstat-no" title="statement not covered" >    throw new Error(`Validation rule "${ name }" does not exist.`);</span>
+};
 &nbsp;
 const asFunctionArray = (rules, messages = <span class="branch-0 cbranch-no" title="branch not covered" >{},</span> data = <span class="branch-0 cbranch-no" title="branch not covered" >{},</span> field = <span class="branch-0 cbranch-no" title="branch not covered" >null)</span> =&gt; {
     <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof rules !== 'string' &amp;&amp; !Array.isArray(rules)) {
-<span class="cstat-no" title="statement not covered" >        throw new Error('First parameter must be a string of rules')</span>
+<span class="cstat-no" title="statement not covered" >        throw new Error('First parameter must be a string of rules');</span>
     }
 &nbsp;
     <span class="missing-if-branch" title="if path not taken" >I</span>if (!isObject(data)) {
-<span class="cstat-no" title="statement not covered" >        throw new Error('Third parameter must be a data object of field to value')</span>
+<span class="cstat-no" title="statement not covered" >        throw new Error('Third parameter must be a data object of field to value');</span>
     }
 &nbsp;
-    const rulesArray = Array.isArray(rules) ? rules : rules.split('|')
-    const ruleNames = [...rulesArray].map(rule =&gt; rule.split(':')[0])
+    const rulesArray = Array.isArray(rules) ? rules : rules.split('|');
+    const ruleNames = [...rulesArray].map(rule =&gt; rule.split(':')[0]);
 &nbsp;
     return rulesArray.map(ruleGroup =&gt; {
-        const [name] = ruleGroup.split(':')
-        const message = isObject(messages) ? messages[name] : messages
+        const [name] = ruleGroup.split(':');
+        const message = isObject(messages) ? messages[name] : messages;
 &nbsp;
-        return asFunction(ruleGroup, { data, field, message: message, rules: ruleNames })
-    })
-}
+        return asFunction(ruleGroup, { data, field, message: message, rules: ruleNames });
+    });
+};
 &nbsp;
 const asFunction = (ruleGroup, options = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> =&gt; {
     <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof ruleGroup !== 'string') {
-<span class="cstat-no" title="statement not covered" >        throw new Error('First parameter must be a string with pattern rule:comma,separated,options')</span>
+<span class="cstat-no" title="statement not covered" >        throw new Error('First parameter must be a string with pattern rule:comma,separated,options');</span>
     }
 &nbsp;
     <span class="missing-if-branch" title="if path not taken" >I</span>if (!isObject(options)) {
-<span class="cstat-no" title="statement not covered" >        throw new Error('Second parameter must be a data object of field to value')</span>
+<span class="cstat-no" title="statement not covered" >        throw new Error('Second parameter must be a data object of field to value');</span>
     }
 &nbsp;
     <span class="missing-if-branch" title="if path not taken" >I</span>if (options.hasOwnProperty('data') &amp;&amp; !isObject(options.data)) {
-<span class="cstat-no" title="statement not covered" >        throw new Error('options.data must be an object')</span>
+<span class="cstat-no" title="statement not covered" >        throw new Error('options.data must be an object');</span>
     }
 &nbsp;
-    const [name, params = ''] = ruleGroup.split(':')
-    const ruleFunc = getRuleFunction(name)
-    const paramsArray = params.split(',').filter(val =&gt; !!val.length)
+    const [name, params = ''] = ruleGroup.split(':');
+    const ruleFunc = getRuleFunction(name);
+    const paramsArray = params.split(',').filter(val =&gt; !!val.length);
 &nbsp;
-    return value =&gt; ruleFunc(value, { ...options, messageParser, params: paramsArray })
-}
+    return value =&gt; ruleFunc(value, { ...options, messageParser, params: paramsArray });
+};
 &nbsp;
 export const customRule = (name, func, override = false) =&gt; {
     if (getAvailableRuleFunction(name)) {
-        throw new Error(`In-built rule "${name}" already exists`)
+        throw new Error(`In-built rule "${ name }" already exists`);
     }
 &nbsp;
     if (customRules.hasOwnProperty(name) &amp;&amp; !override) {
-        throw new Error(`Custom rule "${name}" already exists`)
+        throw new Error(`Custom rule "${ name }" already exists`);
     }
 &nbsp;
     if (typeof func !== 'function') {
-        throw new Error('Second parameter must be a function')
+        throw new Error('Second parameter must be a function');
     }
 &nbsp;
-    customRules[name] = func
-}
+    customRules[name] = func;
+};
 &nbsp;
 export const resetMessageParser = () =&gt; {
-    messageParser = null
-}
+    messageParser = null;
+};
 &nbsp;
 export const setMessageParser = (func) =&gt; {
     if (typeof func !== 'function') {
-        throw new Error('Parameter must be a function')
+        throw new Error('Parameter must be a function');
     }
 &nbsp;
-    messageParser = func
-}
+    messageParser = func;
+};
 &nbsp;
 export const validate = (value, rules, messages = {}, data = {}, field = null) =&gt; {
     if (typeof rules !== 'string' &amp;&amp; !Array.isArray(rules)) {
-        throw new Error('Second parameter must a string of rules')
+        throw new Error('Second parameter must a string of rules');
     }
 &nbsp;
     if (!isObject(data)) {
-        throw new Error('Fourth parameter must be a data object of field to value')
+        throw new Error('Fourth parameter must be a data object of field to value');
     }
 &nbsp;
-    const disposableFieldRules = asFunctionArray(rules, messages, data, field)
-    let valid = true
+    const disposableFieldRules = asFunctionArray(rules, messages, data, field);
+    let valid = true;
 &nbsp;
     while (valid === true &amp;&amp; disposableFieldRules.length) {
         try {
-            const currentRule = disposableFieldRules.shift()
+            const currentRule = disposableFieldRules.shift();
 &nbsp;
-            valid = currentRule(value)
+            valid = currentRule(value);
         } catch (e) {
             if (e instanceof ValidStopError) {
-                valid = true
-                break
+                valid = true;
+                break;
             } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="else path not taken" >E</span>if (e instanceof InvalidStopError) {</span>
-<span class="cstat-no" title="statement not covered" >                valid = false</span>
-<span class="cstat-no" title="statement not covered" >                break</span>
+<span class="cstat-no" title="statement not covered" >                valid = false;</span>
+<span class="cstat-no" title="statement not covered" >                break;</span>
             }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >            throw e</span>
+<span class="cstat-no" title="statement not covered" >            throw e;</span>
         }
     }
 &nbsp;
-    return valid
-}
+    return valid;
+};
 &nbsp;
 export const validateData = (data, rules, messages = {}) =&gt; {
     if (!isObject(data)) {
-        throw new Error('First parameter must be a data object of field to value')
+        throw new Error('First parameter must be a data object of field to value');
     }
 &nbsp;
     if (!isObject(rules)) {
-        throw new Error('Second parameter must be a rules object of field to rules string')
+        throw new Error('Second parameter must be a rules object of field to rules string');
     }
 &nbsp;
-    const result = {}
+    const result = {};
 &nbsp;
     for (const field in rules) {
-        const fieldRules = rules[field]
+        const fieldRules = rules[field];
 &nbsp;
-        let fieldMessages = {}
+        let fieldMessages = {};
 &nbsp;
         if (messages === false) {
-            fieldMessages = false
+            fieldMessages = false;
         } else if (messages.hasOwnProperty(field)) {
-            fieldMessages = messages[field]
+            fieldMessages = messages[field];
         }
 &nbsp;
         if (field.includes('.*')) {
             for (const value of eachInPath(data, field)) {
-                result[field] = validate(value, fieldRules, fieldMessages, data, field)
+                result[field] = validate(value, fieldRules, fieldMessages, data, field);
 &nbsp;
                 if (true !== result[field]) {
-                    break
+                    break;
                 }
             }
 &nbsp;
             continue;
         }
 &nbsp;
-        const value = getObjectPathValue(data, field)
+        const value = getObjectPathValue(data, field);
 &nbsp;
-        result[field] = validate(value, fieldRules, fieldMessages, data, field)
+        result[field] = validate(value, fieldRules, fieldMessages, data, field);
     }
 &nbsp;
-    return result
-}
+    return result;
+};
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -607,7 +607,7 @@ export const validateData = (data, rules, messages = {}) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Sun Dec 04 2022 00:10:43 GMT+0000 (Coordinated Universal Time)
+                at Mon Mar 27 2023 22:12:17 GMT+0000 (Coordinated Universal Time)
             </div>
         <script src="../prettify.js"></script>
         <script>

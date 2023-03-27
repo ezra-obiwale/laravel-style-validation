@@ -1,17 +1,17 @@
-import { max as defaultMessage } from '../../messages'
-import { chooseMessage } from '../../utils'
+import { max as defaultMessage } from '../../messages';
+import { chooseMessage } from '../../utils';
 
 const max = (value, options = {}) => {
-    const { message = null, messageParser, params = [] } = options
-    const maxValue = parseFloat(params[0])
+    const { message = null, messageParser, params = [] } = options;
+    const maxValue = Number(params[0]);
 
-    const isValid = (Array.isArray(value) ? value.length : value) <= maxValue
+    const isValid = (value.length ?? value) <= maxValue;
 
     if (isValid) {
-        return true
+        return true;
     }
 
-    return chooseMessage(message, defaultMessage, { $value: maxValue }, messageParser)
-}
+    return chooseMessage(message, defaultMessage, { $value: maxValue }, messageParser);
+};
 
-export default max
+export default max;

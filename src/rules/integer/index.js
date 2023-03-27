@@ -1,15 +1,15 @@
-import { integer as defaultMessage } from '../../messages'
-import { chooseMessage } from '../../utils'
+import { integer as defaultMessage } from '../../messages';
+import { chooseMessage } from '../../utils';
 
 const integer = (value, options = {}) => {
-    const { message, messageParser } = options
-    const isValid = parseInt(value) === value
+    const { message, messageParser } = options;
+    const isValid = `${ parseInt(value) }` === `${ value }`;
 
     if (isValid) {
-        return true
+        return true;
     }
 
-    return chooseMessage(message, defaultMessage, {}, messageParser)
-}
+    return chooseMessage(message, defaultMessage, {}, messageParser);
+};
 
-export default integer
+export default integer;

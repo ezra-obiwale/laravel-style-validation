@@ -1,11 +1,11 @@
 const nullable = (value, options = {}) => {
-    const { data = {}, field = null } = options
+    const { data = {}, field = null } = options;
 
     if (field && data[field] === undefined) {
-        data[field] = null
+        data[field] = null;
     }
 
-    return true
-}
+    return true;
+};
 
-export default nullable
+export default nullable;
