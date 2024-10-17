@@ -1,0 +1,31 @@
+name: Publish Package
+
+on:
+  push:
+    tags:
+      - 'v*'  # Triggers only on tags like v1.0.0, v2.3.4
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Specify Node.js version or use 'lts/*'
+          cache: 'yarn'
+
+      - name: Install dependencies with Yarn
+        run: yarn install --frozen-lockfile  # Ensures consistency with yarn.lock
+
+      - name: Run tests
+        run: yarn test  # Optional: Adjust if you have tests
+
+      - name: Publish to npm with Yarn
+        run: yarn publish --non-interactive
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}  # Use your npm token stored in secrets
