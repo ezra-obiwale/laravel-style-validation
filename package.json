@@ -1,6 +1,6 @@
 {
   "name": "@ezraobiwale/laravel-style-validation",
-  "version": "3.2.3",
+  "version": "3.2.4",
   "description": "Validations, the Laravel way",
   "main": "dist/index.js",
   "repository": "https://github.com/ezra-obiwale/laravel-style-validation",
@@ -16,7 +16,8 @@
     "node-notifier": "^10.0.1"
   },
   "scripts": {
-    "build": "babel src -d dist",
+    "build": "babel src -d dist && cp src/index.d.ts dist",
     "test": "jest"
-  }
+  },
+  "types": "dist/index.d.ts"
 }
